@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MultiShop.DtoLayer.CatalogDtos.CategoryDtos;
@@ -29,7 +29,7 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
 
             var client = _httpClientFactory.CreateClient(); //İsteği atacak istemciyi(client) oluştur..
             var responseMeassage = await client.GetAsync("https://localhost:7070/api/Products");//get isteği atarız ve bir nesne (paket) döner.
-                                                                                                  //bu paketin içersinde--> status, header ve content alanları var
+                                                                                                //bu paketin içersinde--> status, header ve content alanları var
             if (responseMeassage.IsSuccessStatusCode)
             {
                 string jsonData = await responseMeassage.Content.ReadAsStringAsync();
@@ -50,14 +50,13 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
 
             var client = _httpClientFactory.CreateClient(); //İsteği atacak istemciyi(client) oluştur..
             var responseMeassage = await client.GetAsync("https://localhost:7070/api/Products/ProductListWithCategory");//get isteği atarız ve bir nesne (paket) döner.
-                                                                                                //bu paketin içersinde--> status, header ve content alanları var
+                                                                                                                        //bu paketin içersinde--> status, header ve content alanları var
             if (responseMeassage.IsSuccessStatusCode)
             {
                 string jsonData = await responseMeassage.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<List<ResultProductWithCategoryDto>>(jsonData);
                 return View(values);
             }
-
             return View();
         }
 
@@ -72,7 +71,7 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7070/api/Categories");
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var values  = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
+            var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
 
             List<SelectListItem> categoryValues = (from x in values
                                                    select new SelectListItem
@@ -80,7 +79,7 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
                                                        Text = x.CategoryName,
                                                        Value = x.CategoryId
                                                    }).ToList();
-            ViewBag.CategoryValues = categoryValues;  
+            ViewBag.CategoryValues = categoryValues;
             return View();
         }
 
@@ -128,11 +127,11 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             var values1 = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData1);
 
             List<SelectListItem> categoryValues1 = (from x in values1
-                                                   select new SelectListItem
-                                                   {
-                                                       Text = x.CategoryName,
-                                                       Value = x.CategoryId
-                                                   }).ToList();
+                                                    select new SelectListItem
+                                                    {
+                                                        Text = x.CategoryName,
+                                                        Value = x.CategoryId
+                                                    }).ToList();
             ViewBag.CategoryValues = categoryValues1;
 
 
@@ -163,6 +162,6 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             return View();
         }
 
-        
+
     }
 }

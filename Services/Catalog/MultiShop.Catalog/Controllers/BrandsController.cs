@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MultiShop.Catalog.Dtos.BrandDtos;
 using MultiShop.Catalog.Services.BrandServices;
-using MultiShop.Catalog.Services.BrandServices;
 
 namespace MultiShop.Catalog.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BrandsController : ControllerBase
