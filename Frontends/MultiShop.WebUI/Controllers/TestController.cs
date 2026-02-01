@@ -2,6 +2,7 @@
 using MultiShop.DtoLayer.CatalogDtos.CategoryDtos;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 
 namespace MultiShop.WebUI.Controllers
 {
@@ -14,8 +15,7 @@ namespace MultiShop.WebUI.Controllers
         }
         public async Task<IActionResult> Index()
         {
-
-            string token;
+            string token = "";
             using (var httpClient = new HttpClient())
             {
                 var request = new HttpRequestMessage
@@ -30,7 +30,7 @@ namespace MultiShop.WebUI.Controllers
                     })
                 };
 
-                using(var responseMessage = await httpClient.SendAsync(request))
+                using (var responseMessage = await httpClient.SendAsync(request))
                 {
                     if (responseMessage.IsSuccessStatusCode)
                     {
@@ -40,9 +40,9 @@ namespace MultiShop.WebUI.Controllers
                     }
                 }
             }
-
-
             var client = _httpClientFactory.CreateClient(); //İsteği atacak istemciyi(client) oluştur..
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var responseMeassage = await client.GetAsync("https://localhost:7070/api/Categories");//get isteği atarız ve bir nesne (paket) döner.
                                                                                                   //bu paketin içersinde--> status, header ve content alanları var
             if (responseMeassage.IsSuccessStatusCode)
@@ -51,7 +51,10 @@ namespace MultiShop.WebUI.Controllers
                 var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
                 return View(values);
             }
-
+            return View();
+        }
+        public IActionResult Deneme1()
+        {
             return View();
         }
     }

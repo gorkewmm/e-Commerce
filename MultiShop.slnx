@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/ApiGateway/">
+    <Project Path="ApiGateway/MultiShop.OcelotGateway/MultiShop.OcelotGateway.csproj" Id="aae08064-d19d-4fd6-a2dd-b0c6b3aa6f66" />
+  </Folder>
   <Folder Name="/Frontends/">
     <Project Path="Frontends/MultiShop.DtoLayer/MultiShop.DtoLayer.csproj" Id="c148aded-65fb-4b25-b409-a08cef92581c" />
     <Project Path="Frontends/MultiShop.WebUI/MultiShop.WebUI.csproj" Id="0ca3034d-a4dd-415e-8695-96615d435c58" />
@@ -6,8 +9,10 @@
   <Folder Name="/IdentityServer/">
     <Project Path="IdentityServer/MultiShop.IdentityServer/MultiShop.IdentityServer.csproj" />
   </Folder>
+  <Folder Name="/RapidApi/" />
   <Folder Name="/Requirements/">
     <File Path="IdentityServerVersionErrorSolution.txt" />
+    <File Path="OcelotLink.txt" />
     <File Path="PortainerCmd.txt" />
     <File Path="PortNumbers.txt" />
     <File Path="SimpleCode.txt" />
@@ -33,6 +38,9 @@
   <Folder Name="/Services/Discount/">
     <Project Path="Services/Discount/MultiShop.Discount/MultiShop.Discount.csproj" Id="ae4027dd-d2e9-4762-8cb0-506e6105c506" />
   </Folder>
+  <Folder Name="/Services/Images/">
+    <Project Path="Services/Images/MultiShop.Images/MultiShop.Images.csproj" Id="a2bba2c0-765e-4449-8e3a-48f9f34c3d2f" />
+  </Folder>
   <Folder Name="/Services/Order/" />
   <Folder Name="/Services/Order/Core/">
     <Project Path="Services/Order/Core/MultiShop.Order.Application/MultiShop.Order.Application.csproj" Id="2daacac2-d910-45fb-9122-e0d8f8450324" />
@@ -43,5 +51,8 @@
   </Folder>
   <Folder Name="/Services/Order/Presentation/">
     <Project Path="Services/Order/Presentation/MultiShop.Order.WebApi/MultiShop.Order.WebApi.csproj" Id="2baab2e6-a81c-4482-b318-1c374ec0636a" />
+  </Folder>
+  <Folder Name="/Services/Payment/">
+    <Project Path="Services/Payment/MultiShop.Payment/MultiShop.Payment.csproj" Id="05ba116a-9e90-45d6-977e-f00cc3b02016" />
   </Folder>
 </Solution>
