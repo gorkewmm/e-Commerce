@@ -1,26 +1,4 @@
-{
-  "Routes": [
-    // Catalog Microservisi
-    {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7070
-        }
-      ],
-      "UpstreamPathTemplate": "/services/catalog/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
-      "UpstreamScheme": "http",
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "OcelotAuthenticationScheme",
-        "AllowedScopes": [ "CatalogFullPermission" ]
-      }
-
-    },
-
-    // Discount Microservisi
+   // Discount Microservisi
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
@@ -37,7 +15,6 @@
         "AuthenticationProviderKey": "OcelotAuthenticationScheme",
         "AllowedScopes": [ "DiscountFullPermission" ]
       }
-
     },
 
     // Order Microservisi
@@ -57,9 +34,7 @@
         "AuthenticationProviderKey": "OcelotAuthenticationScheme",
         "AllowedScopes": [ "OrderFullPermission" ]
       }
-
     },
-
 
     //Cargo Microservisi
     {
@@ -78,7 +53,6 @@
         "AuthenticationProviderKey": "OcelotAuthenticationScheme",
         "AllowedScopes": [ "CargoFullPermission" ]
       }
-
     },
 
     //Basket Microservisi
@@ -98,7 +72,6 @@
         "AuthenticationProviderKey": "OcelotAuthenticationScheme",
         "AllowedScopes": [ "BasketFullPermission" ]
       }
-
     },
 
     //Comment Microservisi
@@ -118,7 +91,6 @@
         "AuthenticationProviderKey": "OcelotAuthenticationScheme",
         "AllowedScopes": [ "CommentFullPermission" ]
       }
-
     },
 
     //Payment Microservisi
@@ -138,7 +110,6 @@
         "AuthenticationProviderKey": "OcelotAuthenticationScheme",
         "AllowedScopes": [ "PaymentFullPermission" ]
       }
-
     },
 
     //Images Microservisi
@@ -156,13 +127,6 @@
       "UpstreamScheme": "http",
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "OcelotAuthenticationScheme",
-        "AllowedScopes": [ "ImageFullPermission" ]
+        "AllowedScopes": [ "ImagesFullPermission" ]
       }
-
     }
-
-  ],
-  "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5000"
-  }
-}

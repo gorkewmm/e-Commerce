@@ -9,9 +9,13 @@
   <Folder Name="/IdentityServer/">
     <Project Path="IdentityServer/MultiShop.IdentityServer/MultiShop.IdentityServer.csproj" />
   </Folder>
-  <Folder Name="/RapidApi/" />
+  <Folder Name="/RapidApi/">
+    <File Path="Frontends/MultiShop.WebUI/Program.cs" />
+  </Folder>
   <Folder Name="/Requirements/">
     <File Path="IdentityServerVersionErrorSolution.txt" />
+    <File Path="LoginIndex.txt" />
+    <File Path="OcelotCodeExample.txt" />
     <File Path="OcelotLink.txt" />
     <File Path="PortainerCmd.txt" />
     <File Path="PortNumbers.txt" />
