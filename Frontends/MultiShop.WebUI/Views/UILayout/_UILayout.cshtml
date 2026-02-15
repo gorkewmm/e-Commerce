@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
@@ -10,26 +9,16 @@
 
 
 <body>
-    <!-- Topbar Start -->
     @await Component.InvokeAsync("_TopbarUILayoutComponentPartial");
-    
 
-    <!-- Topbar End -->
-    <!-- Navbar Start -->
     @await Component.InvokeAsync("_NavbarUILayoutComponentPartial");
-    
-    <!-- Navbar End -->
-    <!-- Breadcrumb Start -->
+
+    @await Component.InvokeAsync("_DirectoryAlertUILayoutComponentPartial");
+
     @RenderBody()
 
-    <!-- Breadcrumb End -->
-    <!-- Contact Start -->
-
-    <!-- Contact End -->
-    <!-- Footer Start -->
     @await Component.InvokeAsync("_FooterUILayoutComponentPartial")
-    <!-- Footer End -->
-    <!-- Back to Top -->
+
     @await Component.InvokeAsync("_ScriptUILayoutComponentPartial")
 </body>
 

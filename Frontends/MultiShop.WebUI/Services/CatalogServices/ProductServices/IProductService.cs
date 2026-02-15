@@ -9,7 +9,7 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
         Task CreateProductAsync(CreateProductDto createProductDto);
         Task UpdateProductAsync(UpdateProductDto updateProductDto);
         Task DeleteProductAsync(string id);
-        //Task<List<ResultProductsWithCategoryDto>> GetProductsWithCategoryAsync();
-        //Task<List<ResultProductsWithCategoryDto>> GetProductsWithCategoryByCategoryIdAsync(string CategoryId);
+        Task<List<ResultProductWithCategoryDto>> GetProductsWithCategoryAsync();
+        Task<List<ResultProductWithCategoryDto>> GetProductsWithCategoryByCategoryIdAsync(string CategoryId);
     }
 }
