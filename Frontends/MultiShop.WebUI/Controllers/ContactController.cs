@@ -2,6 +2,7 @@
 using MultiShop.DtoLayer.CatalogDtos.BrandDtos;
 using MultiShop.DtoLayer.CatalogDtos.CategoryDtos;
 using MultiShop.DtoLayer.CatalogDtos.ContactDtos;
+using MultiShop.WebUI.Services.CatalogServices.ContactServices;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -9,16 +10,19 @@ namespace MultiShop.WebUI.Controllers
 {
     public class ContactController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IContactService _contactService;
 
-        public ContactController(IHttpClientFactory httpClientFactory)
+        public ContactController(IContactService contactService)
         {
-            _httpClientFactory = httpClientFactory;
+            _contactService = contactService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            ViewBag.directory1 = "MultiShop";
+            ViewBag.directory2 = "İletişim";
+            ViewBag.directory3 = "Mesaj Gönder";
             return View();
         }
 
@@ -27,17 +31,9 @@ namespace MultiShop.WebUI.Controllers
         {
             _createContactDto.IsRead = false;
             _createContactDto.SendDate = DateTime.Now;
-            var client = _httpClientFactory.CreateClient();
-            string jsonData = JsonConvert.SerializeObject(_createContactDto);
-
-            //http client, string kabul etmez. Yani senin elindeki JSON string’i doğrudan gönderilebilecek bir şey değildir.
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7070/api/Contacts", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index", "Default");
-            }
-            return View();
+            await _contactService.CreateContactAsync(_createContactDto);
+            return RedirectToAction("Index", "Default");
+            
         }
     }
 }

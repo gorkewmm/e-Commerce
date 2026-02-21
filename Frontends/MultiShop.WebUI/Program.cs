@@ -5,6 +5,7 @@ using MultiShop.WebUI.Services;
 using MultiShop.WebUI.Services.CatalogServices.AboutServices;
 using MultiShop.WebUI.Services.CatalogServices.BrandServices;
 using MultiShop.WebUI.Services.CatalogServices.CategoryServices;
+using MultiShop.WebUI.Services.CatalogServices.ContactServices;
 using MultiShop.WebUI.Services.CatalogServices.Features;
 using MultiShop.WebUI.Services.CatalogServices.FeatureServices;
 using MultiShop.WebUI.Services.CatalogServices.FeatureSliderServices;
@@ -119,6 +120,11 @@ builder.Services.AddHttpClient<IProductDetailService, ProductDetailService>(opt 
 builder.Services.AddHttpClient<ICommentService, CommentService>(opt =>
 {
     opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Comment.Path}");
+}).AddHttpMessageHandler<ClientCredentialTokenHandler>();
+
+builder.Services.AddHttpClient<IContactService, ContactService>(opt =>
+{
+    opt.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}");
 }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
 
 
