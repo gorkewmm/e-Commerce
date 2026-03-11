@@ -24,10 +24,10 @@ namespace MultiShop.Order.Application.Features.CQRS.Handlers.AddressHandlers
             return values.Select(x => new GetAddressQueryResult
             {
                 AddressId = x.AddressId,
-                UserId = x.UserId,
                 City = x.City,
+                Detail = x.Detail1,
                 District = x.District,
-                Detail = x.Detail
+                UserId = x.UserId,
             }).ToList();
         }
     }
