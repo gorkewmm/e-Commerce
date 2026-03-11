@@ -7,6 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\normalize-path\package.json" />
+    <Content Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\package.json" />
+    <Content Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\package.json" />
+    <Content Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\map-sources\node_modules\normalize-path\package.json" />
+    <Content Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\map-sources\package.json" />
+    <Content Include="wwwroot\spica\node_modules\%40mdi\font\bower.json" />
+    <Content Include="wwwroot\spica\node_modules\%40mdi\font\css\materialdesignicons.css" />
+    <Content Include="wwwroot\spica\node_modules\%40mdi\font\css\materialdesignicons.min.css" />
+    <Content Include="wwwroot\spica\node_modules\%40mdi\font\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="wwwroot\spica\node_modules\%40mdi\font\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="wwwroot\spica\node_modules\%40mdi\font\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="wwwroot\spica\node_modules\%40mdi\font\package.json" />
+    <Content Include="wwwroot\spica\node_modules\%40mdi\font\preview.html" />
+    <Content Include="wwwroot\spica\node_modules\abbrev\package.json" />
+    <Content Include="wwwroot\spica\node_modules\accepts\package.json" />
+    <Content Include="wwwroot\spica\node_modules\acorn\package.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\MainDownload-OvioAdmin-html5-template\help-documentation\assets\.DS_Store" />
     <None Include="wwwroot\MainDownload-OvioAdmin-html5-template\help-documentation\assets\blueprint-css\plugins\.DS_Store" />
     <None Include="wwwroot\MainDownload-OvioAdmin-html5-template\html\app\et-line-font\fonts\.DS_Store" />
@@ -17,6 +36,153 @@
     <None Include="wwwroot\MainDownload-OvioAdmin-html5-template\html\maps\et-line-font\fonts\.DS_Store" />
     <None Include="wwwroot\MainDownload-OvioAdmin-html5-template\html\pages\et-line-font\fonts\.DS_Store" />
     <None Include="wwwroot\MainDownload-OvioAdmin-html5-template\html\tables\et-line-font\fonts\.DS_Store" />
+    <None Include="wwwroot\spica\.DS_Store" />
+    <None Include="wwwroot\spica\.git\COMMIT_EDITMSG" />
+    <None Include="wwwroot\spica\.git\config" />
+    <None Include="wwwroot\spica\.git\description" />
+    <None Include="wwwroot\spica\.git\FETCH_HEAD" />
+    <None Include="wwwroot\spica\.git\HEAD" />
+    <None Include="wwwroot\spica\.git\hooks\applypatch-msg.sample" />
+    <None Include="wwwroot\spica\.git\hooks\commit-msg.sample" />
+    <None Include="wwwroot\spica\.git\hooks\fsmonitor-watchman.sample" />
+    <None Include="wwwroot\spica\.git\hooks\post-update.sample" />
+    <None Include="wwwroot\spica\.git\hooks\pre-applypatch.sample" />
+    <None Include="wwwroot\spica\.git\hooks\pre-commit.sample" />
+    <None Include="wwwroot\spica\.git\hooks\pre-merge-commit.sample" />
+    <None Include="wwwroot\spica\.git\hooks\pre-push.sample" />
+    <None Include="wwwroot\spica\.git\hooks\pre-rebase.sample" />
+    <None Include="wwwroot\spica\.git\hooks\pre-receive.sample" />
+    <None Include="wwwroot\spica\.git\hooks\prepare-commit-msg.sample" />
+    <None Include="wwwroot\spica\.git\hooks\push-to-checkout.sample" />
+    <None Include="wwwroot\spica\.git\hooks\update.sample" />
+    <None Include="wwwroot\spica\.git\index" />
+    <None Include="wwwroot\spica\.git\info\exclude" />
+    <None Include="wwwroot\spica\.git\info\refs" />
+    <None Include="wwwroot\spica\.git\logs\HEAD" />
+    <None Include="wwwroot\spica\.git\logs\refs\heads\main" />
+    <None Include="wwwroot\spica\.git\logs\refs\remotes\origin\main" />
+    <None Include="wwwroot\spica\.git\objects\8e\47f54e5dfa8210cfde12899344ce0dfcd7baf6" />
+    <None Include="wwwroot\spica\.git\objects\ae\0cfa4f473eca984e4ed547304b8aefe079c9df" />
+    <None Include="wwwroot\spica\.git\objects\df\f30cc2a05e6359cf5eb96cb7a3b388b26176cd" />
+    <None Include="wwwroot\spica\.git\objects\info\commit-graph" />
+    <None Include="wwwroot\spica\.git\objects\info\packs" />
+    <None Include="wwwroot\spica\.git\objects\pack\pack-0566f8b2c18369b55d4923b5b0bb06223e9ee461.idx" />
+    <None Include="wwwroot\spica\.git\objects\pack\pack-0566f8b2c18369b55d4923b5b0bb06223e9ee461.pack" />
+    <None Include="wwwroot\spica\.git\packed-refs" />
+    <None Include="wwwroot\spica\.git\refs\heads\main" />
+    <None Include="wwwroot\spica\.git\refs\remotes\origin\main" />
+    <None Include="wwwroot\spica\css\.DS_Store" />
+    <None Include="wwwroot\spica\fonts\.DS_Store" />
+    <None Include="wwwroot\spica\fonts\Roboto\.DS_Store" />
+    <None Include="wwwroot\spica\images\.DS_Store" />
+    <None Include="wwwroot\spica\images\auth\.DS_Store" />
+    <None Include="wwwroot\spica\images\faces\.DS_Store" />
+    <None Include="wwwroot\spica\js\.DS_Store" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\index.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\lib\generate.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\LICENSE" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\normalize-path\index.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\normalize-path\LICENSE" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\normalize-path\README.md" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\CHANGELOG.md" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\dist\source-map.debug.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\dist\source-map.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\dist\source-map.min.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\dist\source-map.min.js.map" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\lib\array-set.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\lib\base64-vlq.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\lib\base64.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\lib\binary-search.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\lib\mapping-list.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\lib\quick-sort.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\lib\source-map-consumer.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\lib\source-map-generator.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\lib\source-node.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\lib\util.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\LICENSE" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\README.md" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\source-map.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\README.md" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\map-sources\index.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\map-sources\LICENSE" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\map-sources\node_modules\normalize-path\index.js" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\map-sources\node_modules\normalize-path\LICENSE" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\map-sources\node_modules\normalize-path\README.md" />
+    <None Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\map-sources\README.md" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\.github\ISSUE_TEMPLATE.md" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\css\materialdesignicons.css.map" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\css\materialdesignicons.min.css.map" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\fonts\materialdesignicons-webfont.svg" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\fonts\materialdesignicons-webfont.woff2" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\license.md" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\README.md" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\scss\materialdesignicons.scss" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\scss\_animated.scss" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\scss\_core.scss" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\scss\_extras.scss" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\scss\_functions.scss" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\scss\_icons.scss" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\scss\_path.scss" />
+    <None Include="wwwroot\spica\node_modules\%40mdi\font\scss\_variables.scss" />
+    <None Include="wwwroot\spica\node_modules\.bin\acorn" />
+    <None Include="wwwroot\spica\node_modules\.bin\atob" />
+    <None Include="wwwroot\spica\node_modules\.bin\browser-sync" />
+    <None Include="wwwroot\spica\node_modules\.bin\color-support" />
+    <None Include="wwwroot\spica\node_modules\.bin\dev-ip" />
+    <None Include="wwwroot\spica\node_modules\.bin\gulp" />
+    <None Include="wwwroot\spica\node_modules\.bin\in-install" />
+    <None Include="wwwroot\spica\node_modules\.bin\in-publish" />
+    <None Include="wwwroot\spica\node_modules\.bin\lt" />
+    <None Include="wwwroot\spica\node_modules\.bin\mime" />
+    <None Include="wwwroot\spica\node_modules\.bin\mkdirp" />
+    <None Include="wwwroot\spica\node_modules\.bin\node-gyp" />
+    <None Include="wwwroot\spica\node_modules\.bin\node-sass" />
+    <None Include="wwwroot\spica\node_modules\.bin\nopt" />
+    <None Include="wwwroot\spica\node_modules\.bin\not-in-install" />
+    <None Include="wwwroot\spica\node_modules\.bin\not-in-publish" />
+    <None Include="wwwroot\spica\node_modules\.bin\rimraf" />
+    <None Include="wwwroot\spica\node_modules\.bin\sassgraph" />
+    <None Include="wwwroot\spica\node_modules\.bin\semver" />
+    <None Include="wwwroot\spica\node_modules\.bin\sshpk-conv" />
+    <None Include="wwwroot\spica\node_modules\.bin\sshpk-sign" />
+    <None Include="wwwroot\spica\node_modules\.bin\sshpk-verify" />
+    <None Include="wwwroot\spica\node_modules\.bin\strip-indent" />
+    <None Include="wwwroot\spica\node_modules\.bin\throttleproxy" />
+    <None Include="wwwroot\spica\node_modules\.bin\uuid" />
+    <None Include="wwwroot\spica\node_modules\.bin\which" />
+    <None Include="wwwroot\spica\node_modules\abbrev\abbrev.js" />
+    <None Include="wwwroot\spica\node_modules\abbrev\LICENSE" />
+    <None Include="wwwroot\spica\node_modules\abbrev\README.md" />
+    <None Include="wwwroot\spica\node_modules\accepts\HISTORY.md" />
+    <None Include="wwwroot\spica\node_modules\accepts\index.js" />
+    <None Include="wwwroot\spica\node_modules\accepts\LICENSE" />
+    <None Include="wwwroot\spica\node_modules\accepts\README.md" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn-loose\dist\acorn-loose.js" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn-loose\dist\acorn-loose.js.map" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn-loose\dist\acorn-loose.mjs" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn-loose\dist\acorn-loose.mjs.map" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn-walk\dist\walk.js" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn-walk\dist\walk.js.map" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn-walk\dist\walk.mjs" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn-walk\dist\walk.mjs.map" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn\dist\acorn.js" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn\dist\acorn.js.map" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn\dist\acorn.mjs" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn\dist\acorn.mjs.map" />
+    <None Include="wwwroot\spica\node_modules\acorn\acorn\dist\bin.js" />
+    <None Include="wwwroot\spica\node_modules\acorn\AUTHORS" />
+    <None Include="wwwroot\spica\node_modules\acorn\bin\acorn" />
+    <None Include="wwwroot\spica\node_modules\acorn\bin\run_test262.js" />
+    <None Include="wwwroot\spica\node_modules\acorn\bin\test262.whitelist" />
+    <None Include="wwwroot\spica\node_modules\acorn\bin\_acorn.js" />
+    <None Include="wwwroot\spica\node_modules\acorn\CHANGELOG.md" />
+    <None Include="wwwroot\spica\node_modules\acorn\dist\.keep" />
+    <None Include="wwwroot\spica\node_modules\acorn\dist\acorn.es.js" />
+    <None Include="wwwroot\spica\node_modules\acorn\dist\acorn.js" />
+    <None Include="wwwroot\spica\node_modules\acorn\dist\acorn_loose.es.js" />
+    <None Include="wwwroot\spica\node_modules\acorn\dist\acorn_loose.js" />
+    <None Include="wwwroot\spica\node_modules\acorn\LICENSE" />
+    <None Include="wwwroot\spica\node_modules\acorn\README.md" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,10 +195,17 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\User\Data\" />
+    <Folder Include="Areas\User\Models\" />
+    <Folder Include="wwwroot\spica\.git\refs\tags\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MultiShop.DtoLayer\MultiShop.DtoLayer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\spica\node_modules\%40gulp-sourcemaps\identity-map\node_modules\source-map\source-map.d.ts" />
   </ItemGroup>
 
 </Project>
