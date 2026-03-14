@@ -46,6 +46,9 @@
   <Folder Name="/Services/Images/">
     <Project Path="Services/Images/MultiShop.Images/MultiShop.Images.csproj" Id="a2bba2c0-765e-4449-8e3a-48f9f34c3d2f" />
   </Folder>
+  <Folder Name="/Services/Message/">
+    <Project Path="Services/Message/MultiShop.Message/MultiShop.Message.csproj" Id="3eec8f35-550b-46e6-a66f-4d46ba6f71ce" />
+  </Folder>
   <Folder Name="/Services/Order/" />
   <Folder Name="/Services/Order/Core/">
     <Project Path="Services/Order/Core/MultiShop.Order.Application/MultiShop.Order.Application.csproj" Id="2daacac2-d910-45fb-9122-e0d8f8450324" />
