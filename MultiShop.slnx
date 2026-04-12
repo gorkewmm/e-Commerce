@@ -13,6 +13,7 @@
     <File Path="Frontends/MultiShop.WebUI/Program.cs" />
   </Folder>
   <Folder Name="/Requirements/">
+    <File Path="AdminStatisticApiForUI.txt" />
     <File Path="IdentityServerVersionErrorSolution.txt" />
     <File Path="LoginIndex.txt" />
     <File Path="OcelotCodeExample.txt" />
