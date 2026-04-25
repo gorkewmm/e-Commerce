@@ -45,6 +45,7 @@
     <Project Path="Services/Discount/MultiShop.Discount/MultiShop.Discount.csproj" Id="ae4027dd-d2e9-4762-8cb0-506e6105c506" />
   </Folder>
   <Folder Name="/Services/Images/">
+    <Project Path="Services/Images/MultiShop.Images.WebUI/MultiShop.Images.WebUI.csproj" Id="77279fe3-5a6e-49d5-931c-6c35af55c11f" />
     <Project Path="Services/Images/MultiShop.Images/MultiShop.Images.csproj" Id="a2bba2c0-765e-4449-8e3a-48f9f34c3d2f" />
   </Folder>
   <Folder Name="/Services/Message/">
