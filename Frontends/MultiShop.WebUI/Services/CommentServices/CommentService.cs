@@ -1,4 +1,4 @@
-﻿using MultiShop.DtoLayer.CommentDtos;
+using MultiShop.DtoLayer.CommentDtos;
 using Newtonsoft.Json;
 
 namespace MultiShop.WebUI.Services.CommentServices
@@ -33,7 +33,8 @@ namespace MultiShop.WebUI.Services.CommentServices
         public async Task<UpdateCommentDto> GetByIdCommentAsync(string id)
         {
             var responseMessage = await _httpClient.GetAsync("comments/" + id);
-            var values = await responseMessage.Content.ReadFromJsonAsync<UpdateCommentDto>();
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var values = JsonConvert.DeserializeObject<UpdateCommentDto>(jsonData);
             return values;
         }
 
@@ -47,28 +48,31 @@ namespace MultiShop.WebUI.Services.CommentServices
             var responseMessage = await _httpClient.GetAsync($"comments/CommentListByProductId/{id}");
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<ResultCommentDto>>(jsonData);
-            return values;
+            return values ?? new List<ResultCommentDto>();
         }
 
         public async Task<int> GetTotalCommentCount()
         {
             var responseMessage = await _httpClient.GetAsync("comments/GetTotalCommentCount");
-            var values = await responseMessage.Content.ReadFromJsonAsync<int>();
-            return values;
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonData)) return 0;
+            return JsonConvert.DeserializeObject<int>(jsonData);
         }
 
         public async Task<int> GetActiveCommentCount()
         {
             var responseMessage = await _httpClient.GetAsync("comments/GetActiveCommentCount");
-            var values = await responseMessage.Content.ReadFromJsonAsync<int>();
-            return values;
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonData)) return 0;
+            return JsonConvert.DeserializeObject<int>(jsonData);
         }
 
         public async Task<int> GetPassiveCommentCount()
         {
             var responseMessage = await _httpClient.GetAsync("comments/GetPassiveCommentCount");
-            var values = await responseMessage.Content.ReadFromJsonAsync<int>();
-            return values;
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonData)) return 0;
+            return JsonConvert.DeserializeObject<int>(jsonData);
         }
     }
 }

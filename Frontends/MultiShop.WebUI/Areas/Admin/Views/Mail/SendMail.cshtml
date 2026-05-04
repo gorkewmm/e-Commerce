@@ -1,0 +1,286 @@
+@model MultiShop.WebUI.Models.MailRequest
+@{
+    ViewData["Title"] = "Mail Gönder";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<style>
+    .mail-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        overflow: hidden;
+    }
+
+    .mail-card-header {
+        background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%);
+        padding: 28px 32px 22px 32px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .mail-card-header .icon-wrap {
+        background: rgba(255,255,255,0.15);
+        border-radius: 50%;
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .mail-card-header h3 {
+        color: #fff;
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+    }
+
+    .mail-card-header p {
+        color: rgba(255,255,255,0.75);
+        margin: 2px 0 0 0;
+        font-size: 13px;
+    }
+
+    .mail-card-body {
+        padding: 32px;
+    }
+
+    .mail-form-group {
+        margin-bottom: 22px;
+    }
+
+    .mail-form-group label {
+        font-weight: 600;
+        font-size: 13px;
+        color: #37474f;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .mail-form-group label i {
+        margin-right: 6px;
+        color: #3949ab;
+    }
+
+    .mail-input {
+        width: 100%;
+        border: 1.5px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 11px 16px;
+        font-size: 14px;
+        color: #263238;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        background: #fafafa;
+        outline: none;
+    }
+
+    .mail-input:focus {
+        border-color: #3949ab;
+        box-shadow: 0 0 0 3px rgba(57,73,171,0.12);
+        background: #fff;
+    }
+
+    textarea.mail-input {
+        resize: vertical;
+        min-height: 130px;
+    }
+
+    .mail-send-btn {
+        background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 13px 36px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        letter-spacing: 0.3px;
+        transition: opacity 0.2s, transform 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .mail-send-btn:hover {
+        opacity: 0.92;
+        transform: translateY(-1px);
+    }
+
+    .mail-send-btn:active {
+        transform: translateY(0);
+    }
+
+    .mail-reset-btn {
+        background: #eceff1;
+        color: #546e7a;
+        border: none;
+        border-radius: 8px;
+        padding: 13px 28px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: background 0.2s;
+    }
+
+    .mail-reset-btn:hover {
+        background: #cfd8dc;
+    }
+
+    .alert-mail-success {
+        background: linear-gradient(90deg, #e8f5e9, #f1f8e9);
+        border-left: 4px solid #43a047;
+        border-radius: 8px;
+        padding: 14px 20px;
+        color: #2e7d32;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .alert-mail-error {
+        background: linear-gradient(90deg, #ffebee, #fce4ec);
+        border-left: 4px solid #e53935;
+        border-radius: 8px;
+        padding: 14px 20px;
+        color: #c62828;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .mail-divider {
+        border: none;
+        border-top: 1.5px solid #f0f0f0;
+        margin: 24px 0;
+    }
+
+    .mail-tips {
+        background: #f5f7ff;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin-top: 8px;
+    }
+
+    .mail-tips h6 {
+        color: #3949ab;
+        font-weight: 700;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0 0 10px 0;
+    }
+
+    .mail-tips ul {
+        margin: 0;
+        padding-left: 18px;
+        color: #607d8b;
+        font-size: 13px;
+    }
+
+    .mail-tips ul li {
+        margin-bottom: 4px;
+    }
+</style>
+
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+
+            @if (TempData["MailSuccess"] != null)
+            {
+                <div class="alert-mail-success">
+                    <i class="fa fa-check-circle" style="font-size:18px;"></i>
+                    <span>@TempData["MailSuccess"]</span>
+                </div>
+            }
+
+            @if (TempData["MailError"] != null)
+            {
+                <div class="alert-mail-error">
+                    <i class="fa fa-times-circle" style="font-size:18px;"></i>
+                    <span>@TempData["MailError"]</span>
+                </div>
+            }
+
+            <div class="mail-card">
+                <div class="mail-card-header">
+                    <div class="icon-wrap">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h3>Mail Gönder</h3>
+                        <p>Kullanıcılara veya müşterilere e-posta gönderin</p>
+                    </div>
+                </div>
+
+                <div class="mail-card-body">
+                    <form method="post" asp-area="Admin" asp-controller="Mail" asp-action="SendMail">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mail-form-group">
+                            <label><i class="fa fa-at"></i>Alıcı E-posta Adresi</label>
+                            <input type="email"
+                                   asp-for="ReceiverMail"
+                                   class="mail-input"
+                                   placeholder="ornek@mail.com"
+                                   required />
+                        </div>
+
+                        <div class="mail-form-group">
+                            <label><i class="fa fa-tag"></i>Konu</label>
+                            <input type="text"
+                                   asp-for="Subject"
+                                   class="mail-input"
+                                   placeholder="Mail konusunu girin..."
+                                   required />
+                        </div>
+
+                        <div class="mail-form-group">
+                            <label><i class="fa fa-align-left"></i>Mesaj İçeriği</label>
+                            <textarea asp-for="MessageContent"
+                                      class="mail-input"
+                                      placeholder="Mesajınızı buraya yazın..."
+                                      required></textarea>
+                        </div>
+
+                        <hr class="mail-divider" />
+
+                        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                            <button type="submit" class="mail-send-btn">
+                                <i class="fa fa-paper-plane"></i> Gönder
+                            </button>
+                            <button type="reset" class="mail-reset-btn">
+                                <i class="fa fa-refresh"></i> Temizle
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="mail-tips" style="margin-top:24px;">
+                        <h6><i class="fa fa-info-circle"></i> İpuçları</h6>
+                        <ul>
+                            <li>Geçerli bir e-posta adresi girdiğinizden emin olun.</li>
+                            <li>Gmail SMTP üzerinden gönderim yapılmaktadır.</li>
+                            <li>Toplu gönderim için birden fazla adres virgülle ayırabilirsiniz.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

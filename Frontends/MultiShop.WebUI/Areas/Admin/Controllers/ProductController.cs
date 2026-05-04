@@ -36,17 +36,8 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> ProductListWithCategory()
         {
             ProductViewbagList();
-
-            //var client = _httpClientFactory.CreateClient(); //İsteği atacak istemciyi(client) oluştur..
-            //var responseMeassage = await client.GetAsync("https://localhost:7070/api/Products/ProductListWithCategory");//get isteği atarız ve bir nesne (paket) döner.
-            //                                                                                                            //bu paketin içersinde--> status, header ve content alanları var
-            //if (responseMeassage.IsSuccessStatusCode)
-            //{
-            //    string jsonData = await responseMeassage.Content.ReadAsStringAsync();
-            //    var values = JsonConvert.DeserializeObject<List<ResultProductWithCategoryDto>>(jsonData);
-            //    return View(values);
-            //}
-            return View();
+            var values = await _productService.GetProductsWithCategoryAsync();
+            return View(values ?? new List<ResultProductWithCategoryDto>());
         }
 
 

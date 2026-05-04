@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MultiShop.DtoLayer.CommentDtos;
 using Newtonsoft.Json;
@@ -25,17 +25,23 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             ViewBag.v2 = "Yorumlar";
             ViewBag.v3 = "Yorum Listesi";
 
-            var client = _httpClientFactory.CreateClient(); //İsteği atacak istemciyi(client) oluştur..
-            var responseMeassage = await client.GetAsync("https://localhost:7126/api/Comments");//get isteği atarız ve bir nesne (paket) döner.
-                                                                                              //bu paketin içersinde--> status, header ve content alanları var
-            if (responseMeassage.IsSuccessStatusCode)
+            try
             {
-                string jsonData = await responseMeassage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultCommentDto>>(jsonData);
-                return View(values);
+                var client = _httpClientFactory.CreateClient();
+                var responseMeassage = await client.GetAsync("https://localhost:7126/api/Comments");
+                if (responseMeassage.IsSuccessStatusCode)
+                {
+                    string jsonData = await responseMeassage.Content.ReadAsStringAsync();
+                    var values = JsonConvert.DeserializeObject<List<ResultCommentDto>>(jsonData);
+                    return View(values ?? new List<ResultCommentDto>());
+                }
+            }
+            catch (HttpRequestException)
+            {
+                TempData["ServiceError"] = "Yorum servisi şu anda erişilemiyor.";
             }
 
-            return View();
+            return View(new List<ResultCommentDto>());
         }
 
         [Route("DeleteComment/{id}")]

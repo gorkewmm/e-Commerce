@@ -1,4 +1,5 @@
-﻿using MultiShop.DtoLayer.MessageDtos;
+using MultiShop.DtoLayer.MessageDtos;
+using Newtonsoft.Json;
 
 namespace MultiShop.WebUI.Services.MessageServices
 {
@@ -14,22 +15,25 @@ namespace MultiShop.WebUI.Services.MessageServices
         public async Task<List<ResultInboxMessageDto>> GetInboxMessageAsync(string id)
         {
             var responseMessage = await _httpClient.GetAsync("http://localhost:5000/services/Message/UserMessage/GetMessageInbox?id=" + id);
-            var values = await responseMessage.Content.ReadFromJsonAsync<List<ResultInboxMessageDto>>();
-            return values;
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var values = JsonConvert.DeserializeObject<List<ResultInboxMessageDto>>(jsonData);
+            return values ?? new List<ResultInboxMessageDto>();
         }
 
         public async Task<List<ResultSendboxMessageDto>> GetSendboxMessageAsync(string id)
         {
             var responseMessage = await _httpClient.GetAsync("http://localhost:5000/services/Message/UserMessage/GetMessageSendbox?id=" + id);
-            var values = await responseMessage.Content.ReadFromJsonAsync<List<ResultSendboxMessageDto>>();
-            return values;
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var values = JsonConvert.DeserializeObject<List<ResultSendboxMessageDto>>(jsonData);
+            return values ?? new List<ResultSendboxMessageDto>();
         }
 
         public async Task<int> GetTotalMessageCountByReceiverId(string id)
         {
             var responseMessage = await _httpClient.GetAsync("UserMessage/GetTotalMessageCountByReceiverId?id=" + id);
-            var values = await responseMessage.Content.ReadFromJsonAsync<int>();
-            return values;
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonData)) return 0;
+            return JsonConvert.DeserializeObject<int>(jsonData);
         }
     }
 }
