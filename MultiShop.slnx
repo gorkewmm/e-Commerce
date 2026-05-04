@@ -11,6 +11,7 @@
   </Folder>
   <Folder Name="/RapidApi/">
     <File Path="Frontends/MultiShop.WebUI/Program.cs" />
+    <Project Path="RapidApi/MultiShop.RapidApiWebUI/MultiShop.RapidApiWebUI.csproj" Id="649b59c4-7aa6-4691-aa98-90eb0dd02cc7" />
   </Folder>
   <Folder Name="/Requirements/">
     <File Path="AdminStatisticApiForUI.txt" />
@@ -64,6 +65,9 @@
   </Folder>
   <Folder Name="/Services/Payment/">
     <Project Path="Services/Payment/MultiShop.Payment/MultiShop.Payment.csproj" Id="05ba116a-9e90-45d6-977e-f00cc3b02016" />
+  </Folder>
+  <Folder Name="/Services/RabbitMQMessage/">
+    <Project Path="RabbitMQMessage/MultiShop.RabbitMQMessageApi/MultiShop.RabbitMQMessageApi.csproj" Id="1ea539a5-da39-442e-a975-fe4c44e89c51" />
   </Folder>
   <Folder Name="/Services/SignalRRealTime/">
     <Project Path="Services/SignalRRealTime/MultiShop.SignalRRealTimeApi/MultiShop.SignalRRealTimeApi.csproj" Id="ad447657-5c7b-45ce-8630-b0daeccaf335" />

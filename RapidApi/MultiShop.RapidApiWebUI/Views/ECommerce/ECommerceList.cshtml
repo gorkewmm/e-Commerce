@@ -1,0 +1,39 @@
+﻿@model List<ECommerceViewModel.Product>
+@{
+    Layout = null;
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container">
+    <table class="table table-bordered">
+        <tr>
+            <th>#</th>
+            <th>Ürün Başlığı</th>
+            <th>Ürün Puanı</th>
+            <th>Ürün Fiyatı</th>
+            <th>Ürün Detayları</th>
+        </tr>
+        @{
+            int i = 1;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@i</td>
+                <td>@item.product_title</td>
+                <td>
+                    @(item.product_rating.HasValue
+                                    ? "⭐ " + item.product_rating.Value.ToString("0.0")
+                                    : "—")
+                </td>
+                <td>@item.offer?.price</td>
+                <td>
+                    <a href="@item.product_page_url" target="_blank" class="btn btn-primary btn-sm">
+                        Ürün Detayları
+                    </a>
+                </td>
+            </tr>
+            i++;
+        }
+    </table>
+</div>
