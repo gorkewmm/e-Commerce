@@ -1,6 +1,10 @@
-﻿@model List<BasketItemDto>
+﻿@using System.Globalization
+@model List<BasketItemDto>
+@{
+    var tr = CultureInfo.GetCultureInfo("tr-TR");
+}
 <div class="col-lg-8 table-responsive mb-5">
-    <table class="table table-light table-borderless table-hover text-center mb-0">
+    <table class="table table-light table-borderless table-hover text-center mb-0" id="cart-table">
         <thead class="thead-dark">
             <tr>
                 <th>Ürün</th>
@@ -10,32 +14,50 @@
                 <th>Kaldır</th>
             </tr>
         </thead>
-        <tbody class="align-middle">
-            @foreach (var item in Model)
+        <tbody class="align-middle" id="cart-body">
+            @if (Model == null || !Model.Any())
             {
-                <tr>
-                    <td class="align-middle"><img src="@item.ProductImageUrl" alt="" style="width: 50px; height: 60px">@item.ProductName</td>
-                    <td class="align-middle">@item.Price ₺</td>
-                    <td class="align-middle">
-                        <div class="input-group quantity mx-auto" style="width: 100px;">
-                            <div class="input-group-btn">
-                                <button class="btn btn-sm btn-primary btn-minus">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                            </div>
-                            <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="@item.Quantity">
-                            <div class="input-group-btn">
-                                <button class="btn btn-sm btn-primary btn-plus">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
+                <tr id="cart-empty-row">
+                    <td colspan="5" class="text-center text-muted py-4">
+                        <i class="fa fa-shopping-cart"></i> Sepetinizde henüz ürün bulunmuyor.
                     </td>
-                    <td class="align-middle">@item.Price ₺</td>
-                    <td class="align-middle"><a href="/ShoppingCart/RemoveBasketItem/@item.ProductId" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a></td>
                 </tr>
             }
-            
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    var lineTotal = item.Price * item.Quantity;
+                    <tr data-cart-row data-product-id="@item.ProductId">
+                        <td class="align-middle text-left">
+                            <img src="@item.ProductImageUrl" alt="" style="width: 50px; height: 60px; object-fit: cover;" class="mr-2">
+                            @item.ProductName
+                        </td>
+                        <td class="align-middle">@item.Price.ToString("N2", tr) ₺</td>
+                        <td class="align-middle">
+                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary js-cart-qty" data-product-id="@item.ProductId" data-delta="-1">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center js-cart-qty-value" data-product-id="@item.ProductId" value="@item.Quantity" readonly>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-primary js-cart-qty" data-product-id="@item.ProductId" data-delta="1">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="align-middle js-cart-line-total" data-product-id="@item.ProductId">@lineTotal.ToString("N2", tr) ₺</td>
+                        <td class="align-middle">
+                            <button type="button" class="btn btn-sm btn-danger js-cart-remove" data-product-id="@item.ProductId" title="Sepetten çıkar">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
         </tbody>
     </table>
 </div>

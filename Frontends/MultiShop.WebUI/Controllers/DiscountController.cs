@@ -6,6 +6,8 @@ namespace MultiShop.WebUI.Controllers
 {
     public class DiscountController : Controller
     {
+        private const decimal TaxRate = 0.10m;
+
         private readonly IDiscountService _discountService;
         private readonly IBasketService _basketService;
 
@@ -24,17 +26,34 @@ namespace MultiShop.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> ConfirmDiscountCoupon(string code)
         {
+            var basket = await _basketService.GetBasket();
+            var subtotal = basket?.TotalPrice ?? 0m;
+            var totalWithTax = subtotal + (subtotal * TaxRate);
 
-            var values = await _discountService.GetDiscountCouponCountRate(code);
+            int discountRate = 0;
 
-            var basketValues = await _basketService.GetBasket();
-            var totalPriceWithTax = basketValues.TotalPrice + (basketValues.TotalPrice * 10) / 100;
-            
-            var totalNewPriceWithDiscount = totalPriceWithTax - (totalPriceWithTax / 100 * values);
-            //ViewBag.totalNewPriceWithDiscount = totalNewPriceWithDiscount;
+            if (!string.IsNullOrWhiteSpace(code))
+            {
+                try
+                {
+                    discountRate = await _discountService.GetDiscountCouponCountRate(code);
+                }
+                catch
+                {
+                    discountRate = 0;
+                }
+            }
 
-            return RedirectToAction("Index", "ShoppingCart", new { code = code, discountRate = values, 
-                totalNewPriceWithDiscount = totalNewPriceWithDiscount });
+            var totalNewPriceWithDiscount = discountRate > 0
+                ? totalWithTax - (totalWithTax * discountRate / 100m)
+                : totalWithTax;
+
+            return RedirectToAction("Index", "ShoppingCart", new
+            {
+                code,
+                discountRate,
+                totalNewPriceWithDiscount
+            });
         }
     }
 }

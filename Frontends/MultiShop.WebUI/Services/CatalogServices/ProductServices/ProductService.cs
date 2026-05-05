@@ -1,4 +1,4 @@
-﻿using MultiShop.DtoLayer.CatalogDtos.CategoryDtos;
+using MultiShop.DtoLayer.CatalogDtos.CategoryDtos;
 using MultiShop.DtoLayer.CatalogDtos.ProductDtos;
 using Newtonsoft.Json;
 
@@ -44,10 +44,10 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductServices
         }
         public async Task<List<ResultProductWithCategoryDto>> GetProductsWithCategoryAsync()
         {
-            var responseMessage = await _httpClient.GetAsync("products");
+            var responseMessage = await _httpClient.GetAsync("products/ProductListWithCategory");
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<ResultProductWithCategoryDto>>(jsonData);
-            return values;
+            return values ?? new List<ResultProductWithCategoryDto>();
         }
 
         public async Task<List<ResultProductWithCategoryDto>> GetProductsWithCategoryByCategoryIdAsync(string CategoryId)

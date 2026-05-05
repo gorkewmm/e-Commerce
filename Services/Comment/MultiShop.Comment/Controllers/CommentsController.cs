@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,12 @@ namespace MultiShop.Comment.Controllers
         public IActionResult DeleteComment(int id)
         {
             var value = _commentContext.UserComments.Find(id);
+            if (value == null)
+            {
+                return NotFound("Yorum bulunamadı.");
+            }
             _commentContext.UserComments.Remove(value);
+            _commentContext.SaveChanges();
             return Ok("Yorum Başarıyla Silindi");
         }
 
@@ -60,7 +65,9 @@ namespace MultiShop.Comment.Controllers
         [HttpGet("CommentListByProductId/{id}")]
         public IActionResult CommentListByProductId(string id)
         {
-            var value = _commentContext.UserComments.Where(x => x.ProductId == id).ToList();
+            var value = _commentContext.UserComments
+                .Where(x => x.ProductId == id && x.Status == true)
+                .ToList();
             return Ok(value);
         }
 

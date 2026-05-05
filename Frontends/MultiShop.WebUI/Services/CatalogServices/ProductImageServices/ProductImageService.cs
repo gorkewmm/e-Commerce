@@ -1,4 +1,4 @@
-﻿using MultiShop.DtoLayer.CatalogDtos.ProductImageDtos;
+using MultiShop.DtoLayer.CatalogDtos.ProductImageDtos;
 using Newtonsoft.Json;
 
 namespace MultiShop.WebUI.Services.CatalogServices.ProductImageServices
@@ -33,8 +33,9 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductImageServices
         public async Task<GetByIdProductImageDto> GetByIdProductImageAsync(string id)
         {
             var responseMessage = await _httpClient.GetAsync("productimages/" + id);
-            var values = await responseMessage.Content.ReadFromJsonAsync<GetByIdProductImageDto>();
-            return values;
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonData)) return null;
+            return JsonConvert.DeserializeObject<GetByIdProductImageDto>(jsonData);
         }
 
         public async Task UpdateProductImageAsync(UpdateProductImageDto updateProductImageDto)
@@ -45,8 +46,9 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductImageServices
         public async Task<GetByIdProductImageDto> GetByProductIdProductImageAsync(string id)
         {
             var responseMessage = await _httpClient.GetAsync("productimages/ProductImagesByProductId/" + id);
-            var values = await responseMessage.Content.ReadFromJsonAsync<GetByIdProductImageDto>();
-            return values;
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonData)) return null;
+            return JsonConvert.DeserializeObject<GetByIdProductImageDto>(jsonData);
         }
 
     }

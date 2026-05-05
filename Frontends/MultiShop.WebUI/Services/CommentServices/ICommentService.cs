@@ -1,4 +1,4 @@
-﻿using MultiShop.DtoLayer.CommentDtos;
+using MultiShop.DtoLayer.CommentDtos;
 
 namespace MultiShop.WebUI.Services.CommentServices
 {
@@ -8,6 +8,7 @@ namespace MultiShop.WebUI.Services.CommentServices
         Task<List<ResultCommentDto>> CommentListByProductId(string id);
         Task CreateCommentAsync(CreateCommentDto createCommentDto);
         Task UpdateCommentAsync(UpdateCommentDto updateCommentDto);
+        Task ApproveCommentAsync(string id);
         Task DeleteCommentAsync(string id);
         Task<UpdateCommentDto> GetByIdCommentAsync(string id);
         Task<int> GetTotalCommentCount();

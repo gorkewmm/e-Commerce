@@ -33,8 +33,10 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductDetailServices
         public async Task<GetByIdProductDetailDto> GetByIdProductDetailAsync(string id)
         {
             var responseMessage = await _httpClient.GetAsync("productdetails/" + id);
-            var values = await responseMessage.Content.ReadFromJsonAsync<GetByIdProductDetailDto>();
-            return values;
+            if (!responseMessage.IsSuccessStatusCode) return null;
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonData)) return null;
+            return JsonConvert.DeserializeObject<GetByIdProductDetailDto>(jsonData);
         }
 
         public async Task UpdateProductDetailAsync(UpdateProductDetailDto updateProductDetailDto)
@@ -45,8 +47,10 @@ namespace MultiShop.WebUI.Services.CatalogServices.ProductDetailServices
         public async Task<GetByIdProductDetailDto> GetByProductIdProductDetailAsync(string id)
         {
             var responseMessage = await _httpClient.GetAsync("productdetails/GetProductDetailByProductId/" + id);
-            var values = await responseMessage.Content.ReadFromJsonAsync<GetByIdProductDetailDto>();
-            return values;
+            if (!responseMessage.IsSuccessStatusCode) return null;
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonData)) return null;
+            return JsonConvert.DeserializeObject<GetByIdProductDetailDto>(jsonData);
         }
 
     }

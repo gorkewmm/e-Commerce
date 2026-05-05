@@ -13,10 +13,9 @@
                     <div class="product-img position-relative overflow-hidden">
                         <img class="img-fluid w-100" src="@item.ProductImageUrl" alt="">
                         <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" href="/ShoppingCart/AddBasketItem/@item.ProductId"><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                            <button type="button" class="btn btn-outline-dark btn-square js-add-to-cart" data-product-id="@item.ProductId" title="Sepete ekle"><i class="fa fa-shopping-cart"></i></button>
+                            <button type="button" class="btn btn-outline-dark btn-square js-add-to-favorite" data-product-id="@item.ProductId" title="Favorilere ekle"><i class="far fa-heart"></i></button>
+                            <a class="btn btn-outline-dark btn-square" href="/ProductList/ProductDetail/@item.ProductId" title="Ürünü görüntüle"><i class="fa fa-search"></i></a>
                         </div>
                     </div>
                     <div class="text-center py-4">

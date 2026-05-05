@@ -1,0 +1,55 @@
+@model List<ResultProductDto>
+
+@{
+    ViewData["Title"] = "Favorilerim";
+    Layout = "~/Views/UILayout/_UILayout.cshtml";
+}
+
+<div class="container-fluid pt-5 pb-3">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+        <span class="bg-secondary pr-3">Favorilerim</span>
+    </h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="px-xl-5">
+            <div class="alert alert-info">
+                <i class="far fa-heart"></i> Favori listenizde henüz ürün bulunmuyor.
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row px-xl-5">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 pb-1" data-favorite-card="@item.ProductId">
+                    <div class="product-item bg-light mb-4 shadow-sm border">
+                        <div class="product-img position-relative overflow-hidden">
+                            <a href="/ProductList/ProductDetail/@item.ProductId">
+                                <img class="img-fluid w-100" src="@item.ProductImageUrl" alt="@item.ProductName" style="height: 250px; object-fit: cover;">
+                            </a>
+                            <div class="product-action">
+                                <button type="button" class="btn btn-outline-dark btn-square js-add-to-cart" data-product-id="@item.ProductId" title="Sepete ekle">
+                                    <i class="fa fa-shopping-cart"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-square js-remove-favorite" data-product-id="@item.ProductId" title="Favorilerden çıkar">
+                                    <i class="fas fa-heart-broken"></i>
+                                </button>
+                                <a class="btn btn-outline-dark btn-square" href="/ProductList/ProductDetail/@item.ProductId" title="Ürünü görüntüle">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4 px-2">
+                            <a class="h6 text-decoration-none text-truncate d-block" href="/ProductList/ProductDetail/@item.ProductId">@item.ProductName</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5 class="text-primary">@item.ProductPrice ₺</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

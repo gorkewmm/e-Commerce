@@ -29,14 +29,12 @@
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
                         <a href="/Default/Index" class="nav-item nav-link">Ana Sayfa</a>
-                        <a href="shop.html" class="nav-item nav-link">Ürünler</a>
-                        <a href="detail.html" class="nav-item nav-link">Ürün Detayları</a>
                         <a href="detail.html" class="nav-item nav-link">Günün Fırsatı</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Sayfalar <i class="fa fa-angle-down mt-1"></i></a>
                             <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                <a href="cart.html" class="dropdown-item">Sepetim</a>
-                                <a href="checkout.html" class="dropdown-item">Ödeme</a>
+                                <a href="/ShoppingCart/Index" class="dropdown-item">Sepetim</a>
+                                <a href="/Favorite/Index" class="dropdown-item">Favorilerim</a>
                                 <a href="/Register/Index/" class="dropdown-item">Kayıt Ol</a>
                                 <a href="/Login/Index/" class="dropdown-item">Giriş Yap</a>
                             </div>
@@ -44,13 +42,13 @@
                         <a href="/Contact/Index" class="nav-item nav-link">İletişim</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-                        <a href="" class="btn px-0">
+                        <a href="/Favorite/Index" class="btn px-0" title="Favorilerim">
                             <i class="fas fa-heart text-primary"></i>
-                            <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                            <span id="favorite-count-badge" class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">@(ViewBag.FavoriteCount ?? 0)</span>
                         </a>
-                        <a href="" class="btn px-0 ml-3">
+                        <a href="/ShoppingCart/Index" class="btn px-0 ml-3" title="Sepetim">
                             <i class="fas fa-shopping-cart text-primary"></i>
-                            <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                            <span id="basket-count-badge" class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">@(ViewBag.BasketCount ?? 0)</span>
                         </a>
                     </div>
                 </div>

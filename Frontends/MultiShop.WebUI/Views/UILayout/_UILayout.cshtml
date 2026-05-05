@@ -15,11 +15,237 @@
 
     @await Component.InvokeAsync("_DirectoryAlertUILayoutComponentPartial");
 
+    @if (TempData["BasketSuccess"] != null || TempData["BasketError"] != null)
+    {
+        var isSuccess = TempData["BasketSuccess"] != null;
+        var msg = isSuccess ? TempData["BasketSuccess"] : TempData["BasketError"];
+        <div id="multishop-toast" class="position-fixed" style="top: 90px; right: 20px; z-index: 1080; min-width: 280px;">
+            <div class="alert @(isSuccess ? "alert-success" : "alert-danger") shadow-sm d-flex align-items-center" role="alert">
+                <i class="fa @(isSuccess ? "fa-check-circle" : "fa-exclamation-circle") mr-2"></i>
+                <span class="flex-grow-1">@msg</span>
+                <button type="button" class="close ml-2" onclick="document.getElementById('multishop-toast').style.display='none';">
+                    <span>&times;</span>
+                </button>
+            </div>
+        </div>
+        <script>
+            setTimeout(function () {
+                var t = document.getElementById('multishop-toast');
+                if (t) { t.style.transition = 'opacity 0.4s'; t.style.opacity = '0'; setTimeout(function () { t.style.display = 'none'; }, 400); }
+            }, 3000);
+        </script>
+    }
+
     @RenderBody()
 
     @await Component.InvokeAsync("_FooterUILayoutComponentPartial")
 
     @await Component.InvokeAsync("_ScriptUILayoutComponentPartial")
+
+    <div id="ms-toast-container" class="position-fixed" style="top: 90px; right: 20px; z-index: 1080; min-width: 280px;"></div>
+
+    <script>
+        (function () {
+            const TOAST_TIMEOUT = 3000;
+
+            function showToast(message, type) {
+                type = type || 'success';
+                const container = document.getElementById('ms-toast-container');
+                if (!container) return;
+                const id = 'ms-toast-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+                const klass = type === 'error' ? 'alert-danger' : 'alert-success';
+                const icon = type === 'error' ? 'fa-exclamation-circle' : 'fa-check-circle';
+                const html = `
+                    <div id="${id}" class="alert ${klass} shadow-sm d-flex align-items-center" role="alert">
+                        <i class="fa ${icon} mr-2"></i>
+                        <span class="flex-grow-1">${message}</span>
+                        <button type="button" class="close ml-2" onclick="document.getElementById('${id}').remove();">
+                            <span>&times;</span>
+                        </button>
+                    </div>`;
+                container.insertAdjacentHTML('beforeend', html);
+                setTimeout(function () {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    el.style.transition = 'opacity 0.4s';
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 400);
+                }, TOAST_TIMEOUT);
+            }
+
+            function setBadge(elementId, value) {
+                const el = document.getElementById(elementId);
+                if (el) el.textContent = value;
+            }
+
+            function applySummary(summary) {
+                if (!summary) return;
+                const map = {
+                    subtotal: 'subtotal',
+                    tax: 'tax',
+                    totalPriceWithTax: 'totalPriceWithTax',
+                    discountRate: 'discountRate',
+                    discountAmount: 'discountAmount',
+                    totalNewPriceWithDiscount: 'totalNewPriceWithDiscount'
+                };
+                Object.keys(map).forEach(function (key) {
+                    document.querySelectorAll('[data-summary="' + map[key] + '"]').forEach(function (el) {
+                        el.textContent = summary[key];
+                    });
+                });
+            }
+
+            async function postJson(url, body) {
+                const formData = new URLSearchParams();
+                Object.keys(body || {}).forEach(k => formData.append(k, body[k]));
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: formData.toString(),
+                    credentials: 'same-origin'
+                });
+                if (!res.ok) throw new Error('Request failed: ' + res.status);
+                return await res.json();
+            }
+
+            async function addToCart(productId) {
+                if (!productId) return;
+                try {
+                    const data = await postJson('/ShoppingCart/AddBasketItemJson', { id: productId });
+                    if (data && data.success) {
+                        if (typeof data.basketCount === 'number') setBadge('basket-count-badge', data.basketCount);
+                        if (data.summary) applySummary(data.summary);
+                        showToast(data.message || 'Ürün sepete eklendi.', 'success');
+                    } else {
+                        showToast((data && data.message) || 'Ürün sepete eklenemedi.', 'error');
+                    }
+                } catch (e) {
+                    showToast('Sepete ekleme sırasında bir hata oluştu.', 'error');
+                }
+            }
+
+            async function addToFavorite(productId) {
+                if (!productId) return;
+                try {
+                    const data = await postJson('/Favorite/AddFavoriteJson', { id: productId });
+                    if (data && data.success) {
+                        if (typeof data.favoriteCount === 'number') setBadge('favorite-count-badge', data.favoriteCount);
+                        showToast(data.message || 'Ürün favorilere eklendi.', 'success');
+                    } else {
+                        showToast((data && data.message) || 'Favorilere eklenemedi.', 'error');
+                    }
+                } catch (e) {
+                    showToast('Favorilere ekleme sırasında bir hata oluştu.', 'error');
+                }
+            }
+
+            async function removeFavorite(productId) {
+                if (!productId) return;
+                try {
+                    const data = await postJson('/Favorite/RemoveFavoriteJson', { id: productId });
+                    if (data && data.success) {
+                        if (typeof data.favoriteCount === 'number') setBadge('favorite-count-badge', data.favoriteCount);
+                        const card = document.querySelector('[data-favorite-card="' + productId + '"]');
+                        if (card) card.remove();
+                        showToast('Ürün favorilerden çıkarıldı.', 'success');
+                    } else {
+                        showToast((data && data.message) || 'Favorilerden çıkarılamadı.', 'error');
+                    }
+                } catch (e) {
+                    showToast('Favorilerden çıkarma sırasında bir hata oluştu.', 'error');
+                }
+            }
+
+            async function changeCartQty(productId, delta) {
+                if (!productId) return;
+                try {
+                    const data = await postJson('/ShoppingCart/UpdateBasketItemQuantityJson', { id: productId, delta: delta });
+                    if (!data || !data.success) {
+                        showToast((data && data.message) || 'Miktar güncellenemedi.', 'error');
+                        return;
+                    }
+                    if (typeof data.basketCount === 'number') setBadge('basket-count-badge', data.basketCount);
+                    if (data.summary) applySummary(data.summary);
+
+                    if (data.removed) {
+                        const row = document.querySelector('[data-cart-row][data-product-id="' + productId + '"]');
+                        if (row) row.remove();
+                        const tbody = document.getElementById('cart-body');
+                        if (tbody && tbody.querySelectorAll('[data-cart-row]').length === 0) {
+                            tbody.innerHTML = '<tr id="cart-empty-row"><td colspan="5" class="text-center text-muted py-4"><i class="fa fa-shopping-cart"></i> Sepetinizde henüz ürün bulunmuyor.</td></tr>';
+                        }
+                    } else {
+                        const qtyInput = document.querySelector('.js-cart-qty-value[data-product-id="' + productId + '"]');
+                        if (qtyInput) qtyInput.value = data.newQuantity;
+                        const lineTotal = document.querySelector('.js-cart-line-total[data-product-id="' + productId + '"]');
+                        if (lineTotal) lineTotal.textContent = data.lineTotal + ' ₺';
+                    }
+                } catch (e) {
+                    showToast('Miktar güncellenirken hata oluştu.', 'error');
+                }
+            }
+
+            async function removeCartItem(productId) {
+                if (!productId) return;
+                try {
+                    const data = await postJson('/ShoppingCart/RemoveBasketItemJson', { id: productId });
+                    if (!data || !data.success) {
+                        showToast((data && data.message) || 'Ürün kaldırılamadı.', 'error');
+                        return;
+                    }
+                    if (typeof data.basketCount === 'number') setBadge('basket-count-badge', data.basketCount);
+                    if (data.summary) applySummary(data.summary);
+                    const row = document.querySelector('[data-cart-row][data-product-id="' + productId + '"]');
+                    if (row) row.remove();
+                    const tbody = document.getElementById('cart-body');
+                    if (tbody && tbody.querySelectorAll('[data-cart-row]').length === 0) {
+                        tbody.innerHTML = '<tr id="cart-empty-row"><td colspan="5" class="text-center text-muted py-4"><i class="fa fa-shopping-cart"></i> Sepetinizde henüz ürün bulunmuyor.</td></tr>';
+                    }
+                    showToast('Ürün sepetten kaldırıldı.', 'success');
+                } catch (e) {
+                    showToast('Ürün kaldırılırken hata oluştu.', 'error');
+                }
+            }
+
+            document.addEventListener('click', function (ev) {
+                const cartBtn = ev.target.closest('.js-add-to-cart');
+                if (cartBtn) {
+                    ev.preventDefault();
+                    addToCart(cartBtn.getAttribute('data-product-id'));
+                    return;
+                }
+                const favBtn = ev.target.closest('.js-add-to-favorite');
+                if (favBtn) {
+                    ev.preventDefault();
+                    addToFavorite(favBtn.getAttribute('data-product-id'));
+                    return;
+                }
+                const removeFavBtn = ev.target.closest('.js-remove-favorite');
+                if (removeFavBtn) {
+                    ev.preventDefault();
+                    removeFavorite(removeFavBtn.getAttribute('data-product-id'));
+                    return;
+                }
+                const qtyBtn = ev.target.closest('.js-cart-qty');
+                if (qtyBtn) {
+                    ev.preventDefault();
+                    const productId = qtyBtn.getAttribute('data-product-id');
+                    const delta = parseInt(qtyBtn.getAttribute('data-delta'), 10) || 0;
+                    if (delta !== 0) changeCartQty(productId, delta);
+                    return;
+                }
+                const removeBtn = ev.target.closest('.js-cart-remove');
+                if (removeBtn) {
+                    ev.preventDefault();
+                    removeCartItem(removeBtn.getAttribute('data-product-id'));
+                    return;
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>

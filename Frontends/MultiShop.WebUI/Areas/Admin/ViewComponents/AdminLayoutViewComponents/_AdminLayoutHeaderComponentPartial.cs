@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MultiShop.WebUI.Services.CommentServices;
 using MultiShop.WebUI.Services.Interfaces;
 using MultiShop.WebUI.Services.MessageServices;
@@ -18,14 +18,28 @@ namespace MultiShop.WebUI.Areas.Admin.ViewComponents.AdminLayoutViewComponents
             _commentService = commentService;
         }
 
-        public async Task <IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
+            // Kullanıcı bilgisini al
             var user = await _userService.GetUserInfo();
-            int messageCount = await _messageService.GetTotalMessageCountByReceiverId(user.Id);
-            ViewBag.messageCount = messageCount;
 
-            int totalCommentCount = await _commentService.GetTotalCommentCount();
-            ViewBag.totalCommentCount = totalCommentCount;
+            // Mesaj sayısı ve yorum sayısını PARALEL olarak çek
+            var messageCountTask = Task.Run(async () =>
+            {
+                try { return await _messageService.GetTotalMessageCountByReceiverId(user.Id); }
+                catch { return 0; }
+            });
+
+            var commentCountTask = Task.Run(async () =>
+            {
+                try { return await _commentService.GetTotalCommentCount(); }
+                catch { return 0; }
+            });
+
+            await Task.WhenAll(messageCountTask, commentCountTask);
+
+            ViewBag.messageCount = messageCountTask.Result;
+            ViewBag.totalCommentCount = commentCountTask.Result;
 
             return View();
         }

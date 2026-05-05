@@ -43,6 +43,18 @@ namespace MultiShop.WebUI.Services.CommentServices
             await _httpClient.PutAsJsonAsync<UpdateCommentDto>("comments", updateCommentDto);
         }
 
+        public async Task ApproveCommentAsync(string id)
+        {
+            // Mevcut yorumu çek, Status=true yap, geri gönder
+            var responseMessage = await _httpClient.GetAsync("comments/" + id);
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(jsonData)) return;
+            var comment = JsonConvert.DeserializeObject<UpdateCommentDto>(jsonData);
+            if (comment == null) return;
+            comment.Status = true;
+            await _httpClient.PutAsJsonAsync<UpdateCommentDto>("comments", comment);
+        }
+
         public async Task<List<ResultCommentDto>> CommentListByProductId(string id)
         {
             var responseMessage = await _httpClient.GetAsync($"comments/CommentListByProductId/{id}");

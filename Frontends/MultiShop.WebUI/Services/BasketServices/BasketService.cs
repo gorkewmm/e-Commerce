@@ -13,20 +13,21 @@ namespace MultiShop.WebUI.Services.BasketServices
 
         public async Task AddBasketItem(BasketItemDto basketItemDto)
         {
-            var values = await GetBasket();
-            if(values != null)
+            var basket = await GetBasket() ?? new BasketTotalDto { BasketItems = new List<BasketItemDto>() };
+            basket.BasketItems ??= new List<BasketItemDto>();
+
+            var existing = basket.BasketItems.FirstOrDefault(x => x.ProductId == basketItemDto.ProductId);
+            if (existing != null)
             {
-                if(!values.BasketItems.Any(x => x.ProductId == basketItemDto.ProductId))
-                {
-                    values.BasketItems.Add(basketItemDto);
-                }
-                else
-                {
-                    values = new BasketTotalDto();
-                    values.BasketItems.Add(basketItemDto);
-                }
+                existing.Quantity += basketItemDto.Quantity > 0 ? basketItemDto.Quantity : 1;
             }
-            await SaveBasket(values);
+            else
+            {
+                if (basketItemDto.Quantity <= 0) basketItemDto.Quantity = 1;
+                basket.BasketItems.Add(basketItemDto);
+            }
+
+            await SaveBasket(basket);
         }
 
         public Task DeleteBasket(string userId)
@@ -36,22 +37,83 @@ namespace MultiShop.WebUI.Services.BasketServices
 
         public async Task<BasketTotalDto> GetBasket()
         {
-            var responseMessage = await _httpClient.GetAsync("baskets");
-            var values = await responseMessage.Content.ReadFromJsonAsync<BasketTotalDto>();
-            return values;
+            try
+            {
+                var responseMessage = await _httpClient.GetAsync("baskets");
+                if (!responseMessage.IsSuccessStatusCode)
+                {
+                    return new BasketTotalDto { BasketItems = new List<BasketItemDto>() };
+                }
+
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(jsonData) || jsonData == "null")
+                {
+                    return new BasketTotalDto { BasketItems = new List<BasketItemDto>() };
+                }
+
+                var values = System.Text.Json.JsonSerializer.Deserialize<BasketTotalDto>(jsonData,
+                    new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                if (values == null)
+                {
+                    return new BasketTotalDto { BasketItems = new List<BasketItemDto>() };
+                }
+
+                values.BasketItems ??= new List<BasketItemDto>();
+                return values;
+            }
+            catch
+            {
+                return new BasketTotalDto { BasketItems = new List<BasketItemDto>() };
+            }
+        }
+
+        public async Task<(bool removed, int newQuantity)> UpdateBasketItemQuantity(string productId, int delta)
+        {
+            if (string.IsNullOrWhiteSpace(productId)) return (false, 0);
+
+            var basket = await GetBasket();
+            basket.BasketItems ??= new List<BasketItemDto>();
+
+            var item = basket.BasketItems.FirstOrDefault(x => x.ProductId == productId);
+            if (item == null) return (false, 0);
+
+            var newQty = item.Quantity + delta;
+            if (newQty <= 0)
+            {
+                basket.BasketItems.Remove(item);
+                await SaveBasket(basket);
+                return (true, 0);
+            }
+
+            item.Quantity = newQty;
+            await SaveBasket(basket);
+            return (false, newQty);
         }
 
         public async Task<bool> RemoveBasketItem(string productId)
         {
-            var values = await GetBasket();
-            var deletedItem = values.BasketItems.FirstOrDefault(x => x.ProductId == productId);
-            var result = values.BasketItems.Remove(deletedItem);
-            await SaveBasket(values);
+            var basket = await GetBasket();
+            if (basket?.BasketItems == null || basket.BasketItems.Count == 0)
+            {
+                return false;
+            }
+
+            var deletedItem = basket.BasketItems.FirstOrDefault(x => x.ProductId == productId);
+            if (deletedItem == null)
+            {
+                return false;
+            }
+
+            basket.BasketItems.Remove(deletedItem);
+            await SaveBasket(basket);
             return true;
         }
 
         public async Task SaveBasket(BasketTotalDto basketTotalDto)
         {
+            basketTotalDto ??= new BasketTotalDto { BasketItems = new List<BasketItemDto>() };
+            basketTotalDto.BasketItems ??= new List<BasketItemDto>();
             await _httpClient.PostAsJsonAsync<BasketTotalDto>("baskets", basketTotalDto);
         }
     }

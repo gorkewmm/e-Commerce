@@ -1,32 +1,42 @@
 ﻿@model List<ResultProductWithCategoryDto>
 
-<div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-    @foreach(var item in Model)
-    {
-        <div class="product-item bg-light mb-4">
-            <div class="product-img position-relative overflow-hidden">
-                <img class="img-fluid w-100" src="@item.ProductImageUrl" alt="">
-                <div class="product-action">
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+<div class="container-fluid pt-5 pb-3">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+        <span class="bg-secondary pr-3">Ürünlerimiz</span>
+    </h2>
+    <div class="row px-xl-5">
+        @foreach (var item in Model)
+        {
+            @* Her bir ürün için ayrı bir sütun oluşturuyoruz *@
+            <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                <div class="product-item bg-light mb-4 shadow-sm border">
+                    <div class="product-img position-relative overflow-hidden">
+                        <a href="/ProductList/ProductDetail/@item.ProductId">
+                            <img class="img-fluid w-100" src="@item.ProductImageUrl" alt="@item.ProductName" style="height: 250px; object-fit: cover;">
+                        </a>
+                        <div class="product-action">
+                            <button type="button" class="btn btn-outline-dark btn-square js-add-to-cart" data-product-id="@item.ProductId" title="Sepete ekle"><i class="fa fa-shopping-cart"></i></button>
+                            <button type="button" class="btn btn-outline-dark btn-square js-add-to-favorite" data-product-id="@item.ProductId" title="Favorilere ekle"><i class="far fa-heart"></i></button>
+                            <a class="btn btn-outline-dark btn-square" href="/ProductList/ProductDetail/@item.ProductId" title="Ürünü görüntüle"><i class="fa fa-search"></i></a>
+                        </div>
+                    </div>
+                    <div class="text-center py-4 px-2">
+                        <a class="h6 text-decoration-none text-truncate d-block" href="/ProductList/ProductDetail/@item.ProductId">@item.ProductName</a>
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            <h5 class="text-primary">@item.ProductPrice ₺</h5>
+                            <h6 class="text-muted ml-2"><del>@(item.ProductPrice + 100) ₺</del></h6>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <small class="fa fa-star text-warning mr-1"></small>
+                            <small class="fa fa-star text-warning mr-1"></small>
+                            <small class="fa fa-star text-warning mr-1"></small>
+                            <small class="fa fa-star text-warning mr-1"></small>
+                            <small class="fa fa-star text-warning mr-1"></small>
+                            <small class="text-muted">(84)</small>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="text-center py-4">
-                <a class="h6 text-decoration-none text-truncate" href="">@item.ProductName</a>
-                <div class="d-flex align-items-center justify-content-center mt-2">
-                    <h5>@item.ProductPrice</h5><h6 class="text-muted ml-2"><del>000 ₺</del></h6>
-                </div>
-                <div class="d-flex align-items-center justify-content-center mb-1">
-                    <small class="fa fa-star text-primary mr-1"></small>
-                    <small class="fa fa-star text-primary mr-1"></small>
-                    <small class="fa fa-star text-primary mr-1"></small>
-                    <small class="fa fa-star text-primary mr-1"></small>
-                    <small class="fa fa-star text-primary mr-1"></small>
-                    <small>(84)</small>
-                </div>
-            </div>
-        </div>
-    }
+        }
+    </div>
 </div>

@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MultiShop.DtoLayer.CommentDtos;
-using Newtonsoft.Json;
-using System.Text;
+using MultiShop.WebUI.Services.CommentServices;
 
 namespace MultiShop.WebUI.Areas.Admin.Controllers
 {
@@ -11,12 +10,13 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
     [Route("Admin/Comment")]
     public class CommentController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICommentService _commentService;
 
-        public CommentController(IHttpClientFactory httpClientFactory)
+        public CommentController(ICommentService commentService)
         {
-            _httpClientFactory = httpClientFactory;
+            _commentService = commentService;
         }
+
         [Route("Index")]
         public async Task<IActionResult> Index()
         {
@@ -27,16 +27,10 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
 
             try
             {
-                var client = _httpClientFactory.CreateClient();
-                var responseMeassage = await client.GetAsync("https://localhost:7126/api/Comments");
-                if (responseMeassage.IsSuccessStatusCode)
-                {
-                    string jsonData = await responseMeassage.Content.ReadAsStringAsync();
-                    var values = JsonConvert.DeserializeObject<List<ResultCommentDto>>(jsonData);
-                    return View(values ?? new List<ResultCommentDto>());
-                }
+                var values = await _commentService.GetAllCommentAsync();
+                return View(values ?? new List<ResultCommentDto>());
             }
-            catch (HttpRequestException)
+            catch (Exception)
             {
                 TempData["ServiceError"] = "Yorum servisi şu anda erişilemiyor.";
             }
@@ -47,13 +41,30 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
         [Route("DeleteComment/{id}")]
         public async Task<IActionResult> DeleteComment(string id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync("https://localhost:7126/api/Comments?id=" + id);
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                return RedirectToAction("Index", "Comment", new { area = "Admin" });
+                await _commentService.DeleteCommentAsync(id);
             }
-            return View();
+            catch (Exception)
+            {
+                TempData["ServiceError"] = "Yorum silinemedi, servis erişilemiyor.";
+            }
+            return RedirectToAction("Index", "Comment", new { area = "Admin" });
+        }
+
+        [Route("ApproveComment/{id}")]
+        public async Task<IActionResult> ApproveComment(string id)
+        {
+            try
+            {
+                await _commentService.ApproveCommentAsync(id);
+                TempData["SuccessMessage"] = "Yorum başarıyla onaylandı ve yayınlandı.";
+            }
+            catch (Exception)
+            {
+                TempData["ServiceError"] = "Yorum onaylanamadı, servis erişilemiyor.";
+            }
+            return RedirectToAction("Index", "Comment", new { area = "Admin" });
         }
 
         [Route("UpdateComment/{id}")]
@@ -65,15 +76,16 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             ViewBag.v2 = "Yorumlar";
             ViewBag.v3 = "Yorum Listesi";
 
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7126/api/Comments/" + id);
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateCommentDto>(jsonData);
+                var values = await _commentService.GetByIdCommentAsync(id);
                 return View(values);
             }
-            return View();
+            catch (Exception)
+            {
+                TempData["ServiceError"] = "Yorum bilgisi alınamadı, servis erişilemiyor.";
+            }
+            return RedirectToAction("Index", "Comment", new { area = "Admin" });
         }
 
         [Route("UpdateComment/{id}")]
@@ -81,17 +93,15 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> UpdateComment(UpdateCommentDto _updateCommentDto)
         {
             _updateCommentDto.Status = true;
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(_updateCommentDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
-            var responseMessage = await client.PutAsync("https://localhost:7126/api/Comments/", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                return RedirectToAction("Index", "Comment", new { area = "Admin" });
+                await _commentService.UpdateCommentAsync(_updateCommentDto);
             }
-            return View();
+            catch (Exception)
+            {
+                TempData["ServiceError"] = "Yorum güncellenemedi, servis erişilemiyor.";
+            }
+            return RedirectToAction("Index", "Comment", new { area = "Admin" });
         }
-
     }
 }

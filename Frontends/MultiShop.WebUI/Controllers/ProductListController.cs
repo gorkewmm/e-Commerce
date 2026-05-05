@@ -1,17 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MultiShop.DtoLayer.CommentDtos;
-using Newtonsoft.Json;
-using System.Text;
+using MultiShop.WebUI.Services.CommentServices;
+using MultiShop.WebUI.Services.Interfaces;
 
 namespace MultiShop.WebUI.Controllers
 {
     public class ProductListController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICommentService _commentService;
+        private readonly IUserService _userService;
 
-        public ProductListController(IHttpClientFactory httpClientFactory)
+        public ProductListController(ICommentService commentService, IUserService userService)
         {
-            _httpClientFactory = httpClientFactory;
+            _commentService = commentService;
+            _userService = userService;
         }
 
         public IActionResult Index(string id)
@@ -32,35 +34,36 @@ namespace MultiShop.WebUI.Controllers
             return View();
         }
 
-
         [HttpGet]
         public PartialViewResult AddComment()
-        {      
+        {
             return PartialView();
         }
 
         [HttpPost]
         public async Task<IActionResult> AddComment(CreateCommentDto createCommentDto)
         {
+            // Kullanıcı bilgilerini Identity Server'dan otomatik al
+            var user = await _userService.GetUserInfo();
+            createCommentDto.NameSurname = $"{user.Name} {user.Surname}".Trim();
+            createCommentDto.Email = user.Email;
             createCommentDto.ImageUrl = "test";
-            createCommentDto.Rating = 1;
             createCommentDto.CreatedDate = DateTime.Parse(DateTime.Now.ToShortDateString());
             createCommentDto.Status = false;
-            createCommentDto.ProductId = "696f60633d3c56bfad1b2b98";
+            // ProductId formdan gelen hidden input değeriyle gelir, sabit değer KALDIRILDI
 
+            var productId = createCommentDto.ProductId;
 
-            var client = _httpClientFactory.CreateClient();
-            string jsonData = JsonConvert.SerializeObject(createCommentDto);
-
-            //http client, string kabul etmez. Yani senin elindeki JSON string’i doğrudan gönderilebilecek bir şey değildir.
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7126/api/Comments", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            try
             {
-                return RedirectToAction("Index", "Default");
+                await _commentService.CreateCommentAsync(createCommentDto);
             }
-            return View();
-        }
+            catch (Exception)
+            {
+                TempData["CommentError"] = "Yorum servisi şu anda erişilemiyor. Lütfen daha sonra tekrar deneyin.";
+            }
 
+            return RedirectToAction("ProductDetail", "ProductList", new { id = productId });
+        }
     }
 }

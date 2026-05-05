@@ -1,15 +1,31 @@
-﻿@model List<ResultCommentDto>
+@model List<ResultCommentDto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Yorumlar";
     Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
     int count = 0;
 }
 
-
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <i class="fa fa-check-circle"></i> @TempData["SuccessMessage"]
+                </div>
+            }
+
+            @if (TempData["ServiceError"] != null)
+            {
+                <div class="alert alert-warning alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <i class="fa fa-exclamation-triangle"></i> @TempData["ServiceError"]
+                </div>
+            }
+
             <div class="chart-box">
                 <div class="bs-example" data-example-id="bordered-table">
                     <table class="table table-bordered">
@@ -20,23 +36,58 @@
                                 <th>Yorum</th>
                                 <th>Tarih</th>
                                 <th>Durum</th>
+                                <th>Onayla</th>
                                 <th>Sil</th>
                                 <th>Güncelle</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
+                            @if (Model == null || !Model.Any())
                             {
-                                count++;
                                 <tr>
-                                    <th scope="row">@count</th>
-                                    <td>@item.NameSurname</td>
-                                    <td>@item.CommentDetail</td>
-                                    <td>@item.CreatedDate.ToShortDateString()</td>
-                                    <td>@item.Status</td>
-                                    <td><a href="/Admin/Comment/DeleteComment/@item.UserCommentId" class="btn btn-danger">Sil</a></td>
-                                    <td><a href="/Admin/Comment/UpdateComment/@item.UserCommentId" class="btn btn-success">Güncelle</a></td>
+                                    <td colspan="8" class="text-center text-muted">
+                                        <i class="fa fa-comment-o"></i> Henüz yorum bulunmamaktadır.
+                                    </td>
                                 </tr>
+                            }
+                            else
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    count++;
+                                    <tr class="@(!item.Status ? "warning" : "")">
+                                        <th scope="row">@count</th>
+                                        <td>@item.NameSurname</td>
+                                        <td>@item.CommentDetail</td>
+                                        <td>@item.CreatedDate.ToShortDateString()</td>
+                                        <td>
+                                            @if (item.Status)
+                                            {
+                                                <span class="label label-success"><i class="fa fa-check"></i> Onaylı</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-warning"><i class="fa fa-clock-o"></i> Beklemede</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (!item.Status)
+                                            {
+                                                <a href="/Admin/Comment/ApproveComment/@item.UserCommentId"
+                                                   class="btn btn-success btn-xs"
+                                                   onclick="return confirm('Bu yorumu onaylayıp yayınlamak istiyor musunuz?')">
+                                                    <i class="fa fa-check"></i> Onayla
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted"><i class="fa fa-check-circle"></i> Yayında</span>
+                                            }
+                                        </td>
+                                        <td><a href="/Admin/Comment/DeleteComment/@item.UserCommentId" class="btn btn-danger btn-xs" onclick="return confirm('Yorumu silmek istiyor musunuz?')"><i class="fa fa-trash"></i> Sil</a></td>
+                                        <td><a href="/Admin/Comment/UpdateComment/@item.UserCommentId" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Düzenle</a></td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>
@@ -45,3 +96,4 @@
         </div>
     </div>
 </section>
+
