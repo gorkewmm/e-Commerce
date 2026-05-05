@@ -23,6 +23,7 @@ using MultiShop.WebUI.Services.Concrete;
 using MultiShop.WebUI.Services.DiscountServices;
 using MultiShop.WebUI.Services.FavoriteServices;
 using MultiShop.WebUI.Services.Interfaces;
+using MultiShop.WebUI.Services.MailServices;
 using MultiShop.WebUI.Services.MessageServices;
 using MultiShop.WebUI.Services.OrderServices.OrderAddressServices;
 using MultiShop.WebUI.Services.OrderServices.OrderOrderingServices;
@@ -62,6 +63,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddHttpClient<IIdentityService, IdentityService>();
 
 builder.Services.AddHttpClient();

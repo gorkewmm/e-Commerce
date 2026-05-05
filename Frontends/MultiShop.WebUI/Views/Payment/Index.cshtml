@@ -47,14 +47,15 @@
 
         </div>
 
-        <form action="">
+        <form method="post" asp-controller="Payment" asp-action="CompletePayment">
+            @Html.AntiForgeryToken()
             <div class="inputBox">
                 <span>Kart Numarası</span>
-                <input type="text" maxlength="16" class="card-number-input">
+                <input type="text" maxlength="16" class="card-number-input" required>
             </div>
             <div class="inputBox">
                 <span>Kart Sahibi</span>
-                <input type="text" class="card-holder-input">
+                <input type="text" class="card-holder-input" required>
             </div>
             <div class="flexbox">
                 <div class="inputBox">
@@ -93,7 +94,7 @@
                 </div>
                 <div class="inputBox">
                     <span>Cvv</span>
-                    <input type="text" maxlength="4" class="cvv-input">
+                    <input type="text" maxlength="4" class="cvv-input" required>
                 </div>
             </div>
             <input type="submit" value="Ödemeyi Tamamla" class="submit-btn">

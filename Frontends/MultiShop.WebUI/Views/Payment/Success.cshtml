@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Sipariş Tamamlandı";
+    Layout = "~/Views/UILayout/_UILayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="bg-light p-5 text-center shadow-sm rounded">
+                <div class="mb-4" style="font-size: 64px; color: #28a745;">
+                    <i class="fa fa-check-circle"></i>
+                </div>
+                <h2 class="mb-3">Siparişiniz başarıyla alındı</h2>
+                <p class="lead mb-2">Toplam <strong>@ViewBag.Total ₺</strong> tutarındaki siparişiniz oluşturuldu.</p>
+                <p class="text-muted mb-4">
+                    Sipariş onay ve detaylarınız e-posta adresinize gönderildi.
+                    Siparişiniz hazırlanmaya başladığında ve kargoya verildiğinde sizi tekrar bilgilendireceğiz.
+                </p>
+                <a href="/Default/Index" class="btn btn-primary px-4">
+                    <i class="fa fa-home mr-2"></i> Ana Sayfaya Dön
+                </a>
+                <a href="/ProductList/Index/" class="btn btn-outline-dark px-4 ml-2">
+                    <i class="fa fa-shopping-bag mr-2"></i> Alışverişe Devam Et
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
