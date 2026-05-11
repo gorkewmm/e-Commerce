@@ -114,7 +114,8 @@ namespace MultiShop.WebUI.Services.BasketServices
         {
             basketTotalDto ??= new BasketTotalDto { BasketItems = new List<BasketItemDto>() };
             basketTotalDto.BasketItems ??= new List<BasketItemDto>();
-            await _httpClient.PostAsJsonAsync<BasketTotalDto>("baskets", basketTotalDto);
+            var response = await _httpClient.PostAsJsonAsync<BasketTotalDto>("baskets", basketTotalDto);
+            response.EnsureSuccessStatusCode();
         }
     }
 }

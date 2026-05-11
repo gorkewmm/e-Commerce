@@ -1,9 +1,11 @@
-﻿@model List<ResultFeatureSliderDto>
+﻿@using System.Collections.Generic
+@model List<ResultFeatureSliderDto>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
     int count = 0;
+    var categoryNames = ViewBag.CategoryNameById as Dictionary<string, string>;
 }
 
 <section class="content container-fluid">
@@ -16,6 +18,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Görsel Başlığı</th>
+                                <th>Hedef kategori</th>
                                 <th>Sil</th>
                                 <th>Güncelle</th>
                             </tr>
@@ -27,6 +30,20 @@
                                 <tr>
                                     <th scope="row">@count</th>
                                     <td>@item.Title</td>
+                                    <td>
+                                        @if (string.IsNullOrEmpty(item.CategoryId))
+                                        {
+                                            <span class="text-muted">—</span>
+                                        }
+                                        else if (categoryNames != null && categoryNames.TryGetValue(item.CategoryId, out var cname))
+                                        {
+                                            @cname
+                                        }
+                                        else
+                                        {
+                                            <span title="@item.CategoryId">Kategori</span>
+                                        }
+                                    </td>
                                     <td><a href="/Admin/FeatureSlider/DeleteFeatureSlider/@item.FeatureSliderId" class="btn btn-danger">Sil</a></td>
                                     <td><a href="/Admin/FeatureSlider/UpdateFeatureSlider/@item.FeatureSliderId" class="btn btn-success">Güncelle</a></td>
                                 </tr>

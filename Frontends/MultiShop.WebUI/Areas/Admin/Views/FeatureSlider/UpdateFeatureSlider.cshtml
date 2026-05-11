@@ -1,4 +1,5 @@
-﻿@model UpdateFeatureSliderDto
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model UpdateFeatureSliderDto
 
 @{
     ViewData["Title"] = "UpdateFeatureSlider";
@@ -25,6 +26,9 @@
                         <br />
                         <label>Görsel Linki</label>
                         <input type="text" class="form-control" asp-for="ImageUrl" />
+                        <br />
+                        <label>Alışverişe Başla — hedef kategori</label>
+                        @Html.DropDownListFor(x => x.CategoryId, (List<SelectListItem>)ViewBag.CategoryValues, new { @class = "form-control" })
                         <br />
                         <button class="btn btn-primary">Öne Çıkan Slider Görseli Güncelle</button>
                     </form>

@@ -90,6 +90,11 @@ namespace MultiShop.WebUI.Services.Concrete
                 }
             });
 
+            if (discoveryEndPoint.IsError)
+            {
+                return false;
+            }
+
             var passwordTokenRequest = new PasswordTokenRequest
             {
                 ClientId = _clientSettings.MultiShopManagerClient.ClientId,
@@ -101,6 +106,11 @@ namespace MultiShop.WebUI.Services.Concrete
 
             var token = await _httpClient.RequestPasswordTokenAsync(passwordTokenRequest);
 
+            if (token.IsError || string.IsNullOrWhiteSpace(token.AccessToken))
+            {
+                return false;
+            }
+
             var userInfoRequest = new UserInfoRequest
             {
                 Token = token.AccessToken,
@@ -109,8 +119,13 @@ namespace MultiShop.WebUI.Services.Concrete
 
             var userValues = await _httpClient.GetUserInfoAsync(userInfoRequest);
 
+            if (userValues.IsError)
+            {
+                return false;
+            }
+
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(userValues.Claims, CookieAuthenticationDefaults.AuthenticationScheme, "name", "role");
-            
+
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
             var authenticationProperties = new AuthenticationProperties();

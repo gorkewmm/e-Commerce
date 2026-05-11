@@ -23,21 +23,67 @@ namespace MultiShop.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(CreateRegisterDto createRegisterDto)
         {
-            if(createRegisterDto.Password == createRegisterDto.ConfirmPassword)
+            if (string.IsNullOrWhiteSpace(createRegisterDto.Username) ||
+                string.IsNullOrWhiteSpace(createRegisterDto.Password))
             {
-                var client = _httpClientFactory.CreateClient();
-                string jsonData = JsonConvert.SerializeObject(createRegisterDto);
-
-                //http client, string kabul etmez. Yani senin elindeki JSON string’i doğrudan gönderilebilecek bir şey değildir.
-                StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                var responseMessage = await client.PostAsync("http://localhost:5001/api/Registers", stringContent);
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index", "Login");
-                }
+                ViewBag.RegisterError = "Kullanıcı adı ve şifre zorunludur.";
+                return View(createRegisterDto);
             }
-            
-            return View();
+
+            if (createRegisterDto.Password != createRegisterDto.ConfirmPassword)
+            {
+                ViewBag.RegisterError = "Şifreler eşleşmiyor.";
+                return View(createRegisterDto);
+            }
+
+            var client = _httpClientFactory.CreateClient();
+            string jsonData = JsonConvert.SerializeObject(createRegisterDto);
+            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var responseMessage = await client.PostAsync("http://localhost:5001/api/Registers", stringContent);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                TempData["RegisterSuccess"] = "Kayıt başarılı. Şimdi giriş yapabilirsiniz.";
+                return RedirectToAction("Index", "Login");
+            }
+
+            var responseBody = await responseMessage.Content.ReadAsStringAsync();
+            ViewBag.RegisterError = ParseErrorMessage(responseBody)
+                ?? "Kayıt başarısız oldu. Lütfen şifrenin uzunluğunu, büyük/küçük harf, rakam ve özel karakter içerip içermediğini kontrol edin.";
+
+            return View(createRegisterDto);
+        }
+
+        private static string ParseErrorMessage(string body)
+        {
+            if (string.IsNullOrWhiteSpace(body)) return null;
+
+            try
+            {
+                dynamic obj = JsonConvert.DeserializeObject(body);
+                if (obj == null) return null;
+
+                string message = obj.message;
+                var errorsList = new List<string>();
+
+                if (obj.errors != null)
+                {
+                    foreach (var err in obj.errors)
+                    {
+                        errorsList.Add((string)err);
+                    }
+                }
+
+                if (errorsList.Count > 0)
+                {
+                    return $"{message} ({string.Join(" | ", errorsList)})";
+                }
+                return message;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

@@ -36,7 +36,19 @@
 				</div>
 			</div>
 			<form class="form-detail" method="post">
-				<h2>MultiShop Giriş Formu</h2>					
+				<h2>MultiShop Giriş Formu</h2>
+				@if (ViewBag.LoginError != null)
+				{
+					<div style="background:#fde7e7;color:#a94442;border:1px solid #f1b0b0;padding:10px 12px;border-radius:4px;margin:10px 0;font-size:13px;">
+						<strong>Hata:</strong> @ViewBag.LoginError
+					</div>
+				}
+				@if (TempData["RegisterSuccess"] != null)
+				{
+					<div style="background:#e6f4ea;color:#256029;border:1px solid #b1d9c0;padding:10px 12px;border-radius:4px;margin:10px 0;font-size:13px;">
+						@TempData["RegisterSuccess"]
+					</div>
+				}
 				<div class="form-row">
 					<label for="your_username">Kullanıcı Adınız</label>
 					<input type="text" id="your_username" asp-for="Username" class="input-text" required>

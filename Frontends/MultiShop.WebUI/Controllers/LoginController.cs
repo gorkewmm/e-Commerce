@@ -33,7 +33,27 @@ namespace MultiShop.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(SignInDto signInDto)
         {
-            await _identityService.SignIn(signInDto);
+            if (string.IsNullOrWhiteSpace(signInDto.Username) || string.IsNullOrWhiteSpace(signInDto.Password))
+            {
+                ViewBag.LoginError = "Kullanıcı adı ve şifre zorunludur.";
+                return View();
+            }
+
+            try
+            {
+                var success = await _identityService.SignIn(signInDto);
+                if (!success)
+                {
+                    ViewBag.LoginError = "Kullanıcı adı veya şifre hatalı.";
+                    return View();
+                }
+            }
+            catch
+            {
+                ViewBag.LoginError = "Giriş yapılırken bir hata oluştu. Lütfen tekrar deneyin.";
+                return View();
+            }
+
             return RedirectToAction("Index", "User");
         }
 

@@ -111,10 +111,14 @@
                 return await res.json();
             }
 
-            async function addToCart(productId) {
+            async function addToCart(productId, quantity) {
                 if (!productId) return;
+                const qty = parseInt(quantity, 10);
+                const safeQty = isNaN(qty) || qty < 1 ? 1 : Math.min(qty, 99);
+                const body = { id: productId };
+                if (safeQty > 1) body.quantity = safeQty;
                 try {
-                    const data = await postJson('/ShoppingCart/AddBasketItemJson', { id: productId });
+                    const data = await postJson('/ShoppingCart/AddBasketItemJson', body);
                     if (data && data.success) {
                         if (typeof data.basketCount === 'number') setBadge('basket-count-badge', data.basketCount);
                         if (data.summary) applySummary(data.summary);
@@ -214,7 +218,20 @@
                 const cartBtn = ev.target.closest('.js-add-to-cart');
                 if (cartBtn) {
                     ev.preventDefault();
-                    addToCart(cartBtn.getAttribute('data-product-id'));
+                    let qty = 1;
+                    const qtySource = cartBtn.getAttribute('data-qty-source');
+                    if (qtySource) {
+                        const qInput = document.querySelector(qtySource);
+                        if (qInput) {
+                            const v = parseInt(qInput.value, 10);
+                            if (!isNaN(v) && v > 0) qty = v;
+                        }
+                    } else {
+                        const inline = cartBtn.getAttribute('data-quantity');
+                        const v = parseInt(inline, 10);
+                        if (!isNaN(v) && v > 0) qty = v;
+                    }
+                    addToCart(cartBtn.getAttribute('data-product-id'), qty);
                     return;
                 }
                 const favBtn = ev.target.closest('.js-add-to-favorite');

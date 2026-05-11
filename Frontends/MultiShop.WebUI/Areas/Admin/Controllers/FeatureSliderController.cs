@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MultiShop.DtoLayer.CatalogDtos.CategoryDtos;
 using MultiShop.DtoLayer.CatalogDtos.FeatureSliderDtos;
+using MultiShop.WebUI.Services.CatalogServices.CategoryServices;
 using MultiShop.WebUI.Services.CatalogServices.FeatureSliderServices;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace MultiShop.WebUI.Areas.Admin.Controllers
 {
@@ -13,10 +12,27 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
     public class FeatureSliderController : Controller
     {
         private readonly IFeatureSliderService _featureSliderService;
+        private readonly ICategoryService _categoryService;
 
-        public FeatureSliderController(IFeatureSliderService featureSliderService)
+        public FeatureSliderController(IFeatureSliderService featureSliderService, ICategoryService categoryService)
         {
             _featureSliderService = featureSliderService;
+            _categoryService = categoryService;
+        }
+
+        static List<SelectListItem> BuildCategorySelectList(IEnumerable<ResultCategoryDto> categories, string selectedCategoryId = null)
+        {
+            var list = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "— Kategori seçin (isteğe bağlı) —", Value = "", Selected = string.IsNullOrEmpty(selectedCategoryId) }
+            };
+            list.AddRange(categories.Select(x => new SelectListItem
+            {
+                Text = x.CategoryName,
+                Value = x.CategoryId,
+                Selected = !string.IsNullOrEmpty(selectedCategoryId) && x.CategoryId == selectedCategoryId
+            }));
+            return list;
         }
 
         void FeatureSliderViewBagList()
@@ -32,6 +48,8 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
         {
             FeatureSliderViewBagList();
             var values = await _featureSliderService.GetAllFeatureSliderAsync();
+            var categories = await _categoryService.GetAllCategoryAsync() ?? new List<ResultCategoryDto>();
+            ViewBag.CategoryNameById = categories.ToDictionary(c => c.CategoryId, c => c.CategoryName);
             return View(values);
         }
 
@@ -40,6 +58,8 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> CreateFeatureSlider()
         {
             FeatureSliderViewBagList();
+            var categories = await _categoryService.GetAllCategoryAsync() ?? new List<ResultCategoryDto>();
+            ViewBag.CategoryValues = BuildCategorySelectList(categories);
             return View();
         }
         [HttpPost]
@@ -63,6 +83,8 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
         {
             FeatureSliderViewBagList();
             var values = await _featureSliderService.GetByIdFeatureSliderAsync(id);
+            var categories = await _categoryService.GetAllCategoryAsync() ?? new List<ResultCategoryDto>();
+            ViewBag.CategoryValues = BuildCategorySelectList(categories, values.CategoryId);
             return View(values);
         }
 

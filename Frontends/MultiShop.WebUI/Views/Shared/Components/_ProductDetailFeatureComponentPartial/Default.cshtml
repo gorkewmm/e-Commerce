@@ -83,21 +83,42 @@
         <div class="d-flex align-items-center mb-4 pt-2">
             <div class="input-group quantity mr-3" style="width: 130px;">
                 <div class="input-group-btn">
-                    <button class="btn btn-primary btn-minus">
+                    <button type="button" class="btn btn-primary btn-minus">
                         <i class="fa fa-minus"></i>
                     </button>
                 </div>
-                <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
+                <input id="product-detail-qty"
+                       type="number"
+                       min="1"
+                       max="99"
+                       class="form-control bg-secondary border-0 text-center"
+                       value="1" />
                 <div class="input-group-btn">
-                    <button class="btn btn-primary btn-plus">
+                    <button type="button" class="btn btn-primary btn-plus">
                         <i class="fa fa-plus"></i>
                     </button>
                 </div>
             </div>
-            <button class="btn btn-primary px-3">
+            <button type="button"
+                    class="btn btn-primary px-3 js-add-to-cart"
+                    data-product-id="@Model.ProductId"
+                    data-qty-source="#product-detail-qty">
                 <i class="fa fa-shopping-cart mr-1"></i> Sepete Ekle
             </button>
         </div>
+
+        <script>
+            (function () {
+                var qtyInput = document.getElementById('product-detail-qty');
+                if (!qtyInput) return;
+                qtyInput.addEventListener('change', function () {
+                    var v = parseInt(qtyInput.value, 10);
+                    if (isNaN(v) || v < 1) v = 1;
+                    if (v > 99) v = 99;
+                    qtyInput.value = v;
+                });
+            })();
+        </script>
 
         <div class="d-flex pt-2">
             <strong class="text-dark mr-2">Paylaş:</strong>

@@ -82,8 +82,16 @@ namespace MultiShop.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBasketItemJson(string id)
+        public async Task<IActionResult> AddBasketItemJson(string id, int quantity = 1)
         {
+            if (quantity <= 0) quantity = 1;
+            if (quantity > 99) quantity = 99;
+
+            if (User?.Identity == null || !User.Identity.IsAuthenticated)
+            {
+                return Json(new { success = false, message = "Sepete ürün eklemek için giriş yapmanız gerekiyor.", requiresLogin = true });
+            }
+
             try
             {
                 var values = await _productService.GetByIdProductAsync(id);
@@ -97,7 +105,7 @@ namespace MultiShop.WebUI.Controllers
                     ProductId = values.ProductId,
                     ProductName = values.ProductName,
                     Price = values.ProductPrice,
-                    Quantity = 1,
+                    Quantity = quantity,
                     ProductImageUrl = values.ProductImageUrl
                 };
                 await _basketService.AddBasketItem(item);
@@ -105,13 +113,22 @@ namespace MultiShop.WebUI.Controllers
                 var basket = await _basketService.GetBasket();
                 var summary = ComputeSummary(basket, null, 0, 0);
 
+                var message = quantity > 1
+                    ? $"\"{values.ProductName}\" sepete {quantity} adet eklendi."
+                    : $"\"{values.ProductName}\" sepete eklendi.";
+
                 return Json(new
                 {
                     success = true,
-                    message = $"\"{values.ProductName}\" sepete eklendi.",
+                    message,
                     basketCount = summary.BasketCount,
                     summary = ToSummaryDto(summary)
                 });
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                                                 || ex.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                return Json(new { success = false, message = "Oturumunuzun süresi dolmuş olabilir. Lütfen tekrar giriş yapın.", requiresLogin = true });
             }
             catch
             {

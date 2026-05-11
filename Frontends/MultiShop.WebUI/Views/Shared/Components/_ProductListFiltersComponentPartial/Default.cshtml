@@ -1,0 +1,82 @@
+@using MultiShop.WebUI.Models.CategoryFilters
+@model CategoryFilterModel
+
+@{
+    var hasPriceBuckets = Model.PriceFilter?.Buckets?.Any() == true;
+}
+
+<h5 class="section-title position-relative text-uppercase mb-3">
+    <span class="bg-secondary pr-3">Fiyata Göre Filtrele</span>
+</h5>
+<div class="bg-light p-4 mb-30">
+    <form>
+        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+            <input type="checkbox" class="custom-control-input" checked id="price-all">
+            <label class="custom-control-label" for="price-all">Tüm Fiyatlar</label>
+            <span class="badge border font-weight-normal">@Model.TotalProductCount</span>
+        </div>
+
+        @if (hasPriceBuckets)
+        {
+            var index = 0;
+            foreach (var bucket in Model.PriceFilter.Buckets)
+            {
+                index++;
+                var inputId = $"price-{index}";
+                var isLast = index == Model.PriceFilter.Buckets.Count;
+                var classes = isLast
+                    ? "custom-control custom-checkbox d-flex align-items-center justify-content-between"
+                    : "custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3";
+                <div class="@classes">
+                    <input type="checkbox" class="custom-control-input" id="@inputId">
+                    <label class="custom-control-label" for="@inputId">
+                        @bucket.From.ToString("0") ₺ - @bucket.To.ToString("0") ₺
+                    </label>
+                    <span class="badge border font-weight-normal">@bucket.Count</span>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-muted small">Bu kategoride henüz ürün yok.</div>
+        }
+    </form>
+</div>
+
+@if (Model.Filters != null)
+{
+    foreach (var group in Model.Filters)
+    {
+        <h5 class="section-title position-relative text-uppercase mb-3">
+            <span class="bg-secondary pr-3">@group.Title</span>
+        </h5>
+        <div class="bg-light p-4 mb-30">
+            <form>
+                @{
+                    var allId = $"{group.Key}-all";
+                }
+                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                    <input type="checkbox" class="custom-control-input" checked id="@allId">
+                    <label class="custom-control-label" for="@allId">Tümü</label>
+                </div>
+
+                @{
+                    var i = 0;
+                }
+                @foreach (var option in group.Options)
+                {
+                    i++;
+                    var inputId = $"{group.Key}-{option.Value}";
+                    var isLast = i == group.Options.Count;
+                    var classes = isLast
+                        ? "custom-control custom-checkbox d-flex align-items-center justify-content-between"
+                        : "custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3";
+                    <div class="@classes">
+                        <input type="checkbox" class="custom-control-input" id="@inputId">
+                        <label class="custom-control-label" for="@inputId">@option.Label</label>
+                    </div>
+                }
+            </form>
+        </div>
+    }
+}
